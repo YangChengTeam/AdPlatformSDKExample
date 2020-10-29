@@ -14,7 +14,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         AdPlatformSDK.getInstance(this).init(this, "1", new AdPlatformSDK.InitCallback() {
             @Override
             public void onSuccess() {
