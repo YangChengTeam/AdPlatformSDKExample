@@ -19,13 +19,13 @@ public class InitEngin extends BaseEngin {
 
     @Override
     public String getUrl() {
-        return "http://cmusictest.tn550.com/api/v1.user/imeiLogin";
+        return "http://a.6ll.com/v1/Index/init?rsa=5";
     }
 
     public Observable<ResultInfo<InitInfo>> getInItInfo() {
         Map<String, String> params = new HashMap<>();
         return rxpost(new TypeReference<ResultInfo<InitInfo>>() {
-        }.getType(), params, true, true, true);
+        }.getType(), params, false, false, false);
     }
 
 }

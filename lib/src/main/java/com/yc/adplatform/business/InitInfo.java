@@ -1,16 +1,14 @@
 package com.yc.adplatform.business;
 
-import android.text.TextUtils;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import com.yc.adplatform.ad.core.AdConfigInfo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class InitInfo {
 
     public String getIp() {
+        if(ip == null || ip.length() < 12){
+            ip = "";
+        }
         return ip;
     }
 
