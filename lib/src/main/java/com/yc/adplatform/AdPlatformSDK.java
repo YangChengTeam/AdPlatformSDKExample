@@ -5,6 +5,7 @@ import android.os.Build;
 import android.util.Log;
 import android.widget.FrameLayout;
 
+import com.tencent.mmkv.MMKV;
 import com.yc.adplatform.ad.core.AdCallback;
 import com.yc.adplatform.ad.core.AdConfigInfo;
 import com.yc.adplatform.ad.core.AdError;
@@ -40,6 +41,8 @@ public class AdPlatformSDK {
     }
 
     private AdPlatformSDK(Context context) {
+        MMKV.initialize(context);
+
         GoagalInfo.get().init(context);
         HttpConfig.setPublickey("-----BEGIN PUBLIC KEY-----\n" +
                 "MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAq1wNiX3iQt+Q7juXZDNR\n" +
