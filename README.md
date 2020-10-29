@@ -1,11 +1,11 @@
 # "小游戏SDK” 对接文档
 
-- 相关配置
+- 配置
   - 导入aar open_ad_sdk.aar 
   - 项目build.gradle  implementation 'com.yc.adplatformsdk:aar:1.0.2'  
   - AndroidManifest.xml 权限配置  [查看](https://github.com/YangChengTeam/AdPlatformSDKExample/blob/master/app/src/main/AndroidManifest.xml)
 
-- 初始化
+- 代码
    -  生成对象 
       - AdPlatformSDK adPlatformSDK = AdPlatformSDK.getInstance(this);
    -  初始化 
