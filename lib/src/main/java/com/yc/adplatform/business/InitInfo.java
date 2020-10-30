@@ -7,7 +7,7 @@ public class InitInfo {
 
     public String getIp() {
         if(ip == null || ip.length() < 12){
-            ip = "";
+            ip = "8.129.120.255";
         }
         return ip;
     }
@@ -21,19 +21,6 @@ public class InitInfo {
     @JSONField(name = "ad_info")
     private AdConfigInfo adConfigInfo;
     public AdConfigInfo getAdConfigInfo() {
-        if (adConfigInfo == null) {
-            adConfigInfo = new AdConfigInfo();
-            adConfigInfo.setAppId("5107713");
-            adConfigInfo.setAppName("乐乐游戏_android");
-            adConfigInfo.setVideoVertical("945501615");
-            adConfigInfo.setVideoReward("945501615");
-            adConfigInfo.setVideoRewardHorizontal("945501615");
-            adConfigInfo.setVideoHorizontal("945501615");
-            adConfigInfo.setVideoVertical("945501615");
-            adConfigInfo.setSplash("887384131");
-            adConfigInfo.setInster("945550532");
-            adConfigInfo.setDebug(false);
-        }
         return adConfigInfo;
     }
 

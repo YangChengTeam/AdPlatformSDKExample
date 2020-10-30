@@ -2,7 +2,6 @@ package com.yc.adplatform;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.tencent.mmkv.MMKV;
@@ -28,7 +27,6 @@ import rx.functions.Action1;
 public class AdPlatformSDK {
 
     public static AdPlatformSDK sInstance;
-
     public static AdPlatformSDK getInstance(Context context) {
         if (sInstance == null) {
             synchronized (AdPlatformSDK.class) {
@@ -82,11 +80,11 @@ public class AdPlatformSDK {
 
 
     private InitInfo mInitInfo;
-    private String mAppId;
+    private String   mAppId;
+    
 
     public interface InitCallback {
         void onSuccess();
-
         void onFailure();
     }
 
@@ -108,7 +106,6 @@ public class AdPlatformSDK {
 
                             @Override
                             public void onFailure(AdError adError) {
-                                Log.d("00671 securityhttp ", "initAd onFailure: " + adError.getMessage());
                                 if (initCallback != null) {
                                     initCallback.onFailure();
                                 }
@@ -127,10 +124,12 @@ public class AdPlatformSDK {
     }
 
     private void sendClickLog(String adPosition, String adCode) {
+        if (mInitInfo == null) return;
         AdLog.sendLog(mInitInfo.getIp(), 12345, mAppId, "0", adPosition, adCode, "click");
     }
 
     private void sendShowLog(String adPosition, String adCode) {
+        if (mInitInfo == null) return;
         AdLog.sendLog(mInitInfo.getIp(), 12345, mAppId, "0", adPosition, adCode, "show");
     }
 
