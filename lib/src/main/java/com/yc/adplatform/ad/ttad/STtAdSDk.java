@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
-import com.bytedance.sdk.openadsdk.FilterWord;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdDislike;
 import com.bytedance.sdk.openadsdk.TTAdNative;
@@ -26,9 +25,6 @@ import com.yc.adplatform.ad.core.InitAdCallback;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-/**
- * Created by mayn on 2019/7/16.
- */
 
 public class STtAdSDk implements ISGameSDK {
 
@@ -62,6 +58,146 @@ public class STtAdSDk implements ISGameSDK {
             }
         }
         return sTtAdSDk;
+    }
+
+    private void loadExpressAd(String feedId, AdCallback adCallback) {
+        AdSlot adSlot = new AdSlot.Builder()
+                .setCodeId(feedId)
+                .setSupportDeepLink(true)
+                .setAdCount(1) //请求广告数量为1到3条
+                .setExpressViewAcceptedSize(254, 200)
+                .build();
+
+        TTAdManagerHolder.get().createAdNative(mContext.get()).loadNativeExpressAd(adSlot,
+                new TTAdNative.NativeExpressAdListener() {
+                    @Override
+                    public void onError(int code, String message) {
+                        if (mSplashContainer != null) {
+                            mSplashContainer.get().removeAllViews();
+                        }
+                        AdError adError = new AdError();
+                        adError.setMessage(message);
+                        adError.setCode(String.valueOf(code));
+                        if (adCallback != null) {
+                            adCallback.onNoAd(adError);
+                        }
+                    }
+
+                    @Override
+                    public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
+                        if (ads == null || ads.size() == 0) {
+                            return;
+                        }
+                        TTNativeExpressAd mTTAd = ads.get(0);
+                        bindAdListenerExpress(mTTAd, adCallback);
+                        startTime = System.currentTimeMillis();
+                        mTTAd.render();
+                    }
+                });
+    }
+
+
+    private void bindAdListenerExpress(TTNativeExpressAd ad, AdCallback callback) {
+        ad.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
+
+            @Override
+            public void onAdClicked(View view, int type) {
+                Log.e(TAG, "广告被点击");
+                if (callback != null)
+                    callback.onClick();
+            }
+
+            @Override
+            public void onAdShow(View view, int type) {
+                Log.e(TAG, "广告展示");
+                if (callback != null)
+                    callback.onPresent();
+            }
+
+            @Override
+            public void onRenderFail(View view, String msg, int code) {
+                Log.e(TAG, "渲染失败 render fail:" + (System.currentTimeMillis() - startTime));
+                AdError adError = new AdError();
+                adError.setMessage("渲染失败 " + msg);
+                adError.setCode(String.valueOf(code));
+                if (callback != null)
+                    callback.onNoAd(adError);
+            }
+
+            @Override
+            public void onRenderSuccess(View view, float width, float height) {
+                Log.e(TAG, "渲染成功 render suc:" + (System.currentTimeMillis() - startTime));
+                if (mSplashContainer != null) {
+                    mSplashContainer.get().removeAllViews();
+                    mSplashContainer.get().addView(view);
+                }
+            }
+        });
+        bindDislike(ad, false);
+        if (ad.getInteractionType() != TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
+            return;
+        }
+        ad.setDownloadListener(new TTAppDownloadListener() {
+            @Override
+            public void onIdle() {
+//                TToast.show(mContext.get(), "点击开始下载", Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
+                if (!mHasShowDownloadActive) {
+                    mHasShowDownloadActive = true;
+                    Log.d(TAG, "onDownloadActive: " + "下载中，点击暂停");
+//                    TToast.show(mContext.get(), "下载中，点击暂停", Toast.LENGTH_LONG);
+                }
+            }
+
+            @Override
+            public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
+                Log.d(TAG, "onDownloadPaused: " + "下载暂停，点击继续");
+//                TToast.show(mContext.get(), "下载暂停，点击继续", Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
+//                TToast.show(mContext.get(), "下载失败，点击重新下载", Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void onInstalled(String fileName, String appName) {
+//                TToast.show(mContext.get(), "安装完成，点击图片打开", Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void onDownloadFinished(long totalBytes, String fileName, String appName) {
+//                TToast.show(mContext.get(), "点击安装", Toast.LENGTH_LONG);
+            }
+        });
+    }
+
+    private void bindDislike(TTNativeExpressAd ad, boolean customStyle) {
+        //使用默认模板中默认dislike弹出样式
+        ad.setDislikeCallback((Activity) mContext.get(), new TTAdDislike.DislikeInteractionCallback() {
+            @Override
+            public void onSelected(int position, String value) {
+                //TToast.show(mContext, "反馈了 " + value);
+                //用户选择不喜欢原因后，移除广告展示
+                if (mSplashContainer != null) {
+                    mSplashContainer.get().removeAllViews();
+                }
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "onCancel: 点击取消");
+            }
+
+            @Override
+            public void onRefuse() {
+                Log.d(TAG, "onRefuse: 您已成功提交反馈，请勿重复提交哦！ ");
+            }
+
+        });
     }
 
     /**
@@ -219,20 +355,24 @@ public class STtAdSDk implements ISGameSDK {
 
 
         switch (type) {
+            case EXPRESS:
+                mSplashContainer = new WeakReference<>(viewGroup);
+                loadExpressAd(mAdConfigInfo.getExpress(), callback);
+                break;
             case INSERT:
                 loadInteractionAd(mAdConfigInfo.getInster(), callback);
                 break;
-            case VIDEO_REWARD:
-                loadRewardVideoAd(mAdConfigInfo.getVideoReward(), TTAdConstant.VERTICAL, callback);
+            case REWARD_VIDEO_VERTICAL:
+                loadRewardVideoAd(mAdConfigInfo.getRewardVideoVertical(), TTAdConstant.VERTICAL, callback);
                 break;
-            case VIDEO_REWARD_HORIZON:
-                loadRewardVideoAd(mAdConfigInfo.getVideoRewardHorizontal(), TTAdConstant.HORIZONTAL, callback);
+            case REWARD_VIDEO_HORIZON:
+                loadRewardVideoAd(mAdConfigInfo.getRewardVideoHorizontal(), TTAdConstant.HORIZONTAL, callback);
                 break;
-            case VIDEO:
-                loadVideoAd(mAdConfigInfo.getVideoVertical(), TTAdConstant.VERTICAL, callback);
+            case FULL_SCREEN_VIDEO_VERTICAL:
+                loadVideoAd(mAdConfigInfo.getFullScreenVideoVertical(), TTAdConstant.VERTICAL, callback);
                 break;
-            case VIDEO_HORIZON:
-                loadVideoAd(mAdConfigInfo.getVideoRewardHorizontal(), TTAdConstant.HORIZONTAL, callback);
+            case FULL_SCREEN_VIDEO_HORIZON:
+                loadVideoAd(mAdConfigInfo.getRewardVideoHorizontal(), TTAdConstant.HORIZONTAL, callback);
                 break;
             case SPLASH:
                 //定时，AD_TIME_OUT时间到时执行，如果开屏广告没有加载则跳转到主页面

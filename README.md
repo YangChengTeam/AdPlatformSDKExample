@@ -20,16 +20,19 @@
    -  调用广告
       - 开屏 
          - adPlatformSDK.showSplashAd()
+      - 信息流
+         - adPlatformSDK.showExpressAd()
+      - 横屏
+         - adPlatformSDK.showBannerAd()
       - 激励视频  
          - 竖屏
-             - adPlatformSDK.showVideoRewardVerticalAd()
+             - adPlatformSDK.showRewardVideoVerticalAd()
          - 横屏
-             - adPlatformSDK.showVideoRewardHorizontalAd()
-
+             - adPlatformSDK.showRewardVideoHorizontalAd()
       - 全屏视频  
          - 竖屏
-             - adPlatformSDK.showVideoVerticalAd()
-        - 横屏
-             - adPlatformSDK.showVideoHorizontalAd()
+             - adPlatformSDK.showFullScreenVideoVerticalAd()
+         - 横屏
+             - adPlatformSDK.showFullScreenVideoHorizontalAd()
       - 插屏 
          - adPlatformSDK.showInsertAd()

@@ -6,7 +6,7 @@ import com.yc.adplatform.ad.core.AdConfigInfo;
 public class InitInfo {
 
     public String getIp() {
-        if(ip == null || ip.length() < 12){
+        if (ip == null || ip.length() < 12) {
             ip = "8.129.120.255";
         }
         return ip;
@@ -20,6 +20,7 @@ public class InitInfo {
 
     @JSONField(name = "ad_info")
     private AdConfigInfo adConfigInfo;
+
     public AdConfigInfo getAdConfigInfo() {
         return adConfigInfo;
     }

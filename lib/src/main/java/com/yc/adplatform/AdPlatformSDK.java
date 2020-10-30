@@ -27,6 +27,7 @@ import rx.functions.Action1;
 public class AdPlatformSDK {
 
     public static AdPlatformSDK sInstance;
+
     public static AdPlatformSDK getInstance(Context context) {
         if (sInstance == null) {
             synchronized (AdPlatformSDK.class) {
@@ -78,47 +79,69 @@ public class AdPlatformSDK {
         HttpConfig.setDefaultParams(params);
     }
 
-
     private InitInfo mInitInfo;
-    private String   mAppId;
-    
+    private String mAppId;
 
-    public interface InitCallback {
-        void onSuccess();
-        void onFailure();
+    public void setAdConfigInfo(AdConfigInfo adConfigInfo) {
+        this.mInitInfo.setAdConfigInfo(adConfigInfo);
     }
 
+    public interface InitCallback {
+        void onSuccess();  // 初始化成功
+
+        void onFailure(); // 初始化失嵊
+
+        void onAdInitSuccess(); // 广告初始化成功
+
+        void onAdInitFailure(); // 广告初始化失嵊
+    }
+
+    private int initCount = 3;
     public void init(final Context context, String appId, final InitCallback initCallback) {
-        this.mAppId = appId;
+
+        this.mInitInfo = new InitInfo();
+        this.mAppId    = appId;
+
+        boolean isInitSuccess = false;
+
         new InitEngin(context).getInItInfo().subscribe(new Action1<ResultInfo<InitInfo>>() {
             @Override
             public void call(ResultInfo<InitInfo> initInfoResultInfo) {
+
                 if (initInfoResultInfo != null && initInfoResultInfo.getCode() == 1 && initInfoResultInfo.getData() != null) {
                     AdPlatformSDK.this.mInitInfo = initInfoResultInfo.getData();
                     if (initCallback != null) {
-                        AdConfigInfo adConfigInfo = mInitInfo.getAdConfigInfo();
-                        SAdSDK.getImpl().initAd(context, adConfigInfo, new InitAdCallback() {
-                            @Override
-                            public void onSuccess() {
-                                SAdSDK.getImpl().setAdConfigInfo(mInitInfo.getAdConfigInfo());
-                                initCallback.onSuccess();
-                            }
-
-                            @Override
-                            public void onFailure(AdError adError) {
-                                if (initCallback != null) {
-                                    initCallback.onFailure();
-                                }
-                            }
-                        });
-
+                        initCallback.onSuccess();
                     }
+                }
+
+                if (!isInitSuccess && --initCount > 0) {
+                    init(context, appId, initCallback);
                     return;
                 }
 
                 if (initCallback != null) {
                     initCallback.onFailure();
                 }
+
+                AdConfigInfo adConfigInfo = mInitInfo.getAdConfigInfo();
+                SAdSDK.getImpl().initAd(context, adConfigInfo, new InitAdCallback() {
+                    @Override
+                    public void onSuccess() {
+                        SAdSDK.getImpl().setAdConfigInfo(mInitInfo.getAdConfigInfo());
+                        if (initCallback != null) {
+                            initCallback.onAdInitSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(AdError adError) {
+                        if (initCallback != null) {
+                            initCallback.onAdInitFailure();
+                        }
+                    }
+                });
+
             }
         });
     }
@@ -184,33 +207,41 @@ public class AdPlatformSDK {
         showAd(context, AdType.SPLASH, adPosition, adCode, callback, containerView);
     }
 
-    public void showVideoRewardVerticalAd(Context context, AdCallback callback) {
-        String adCode = mInitInfo.getAdConfigInfo().getVideoReward();
-        String adPosition = "ad_video_reward";
-        showAd(context, AdType.VIDEO_REWARD, adPosition, adCode, callback);
-    }
-
-    public void showVideoRewardHorizontalAd(Context context, AdCallback callback) {
-        String adCode = mInitInfo.getAdConfigInfo().getVideoReward();
-        String adPosition = "ad_video_reward";
-        showAd(context, AdType.VIDEO_REWARD_HORIZON, adPosition, adCode, callback);
-    }
-
-    public void showVideoVerticalAd(Context context, AdCallback callback) {
-        String adCode = mInitInfo.getAdConfigInfo().getVideoReward();
-        String adPosition = "ad_video";
-        showAd(context, AdType.VIDEO, adPosition, adCode, callback);
-    }
-
-    public void showVideoHorizontalAd(Context context, AdCallback callback) {
-        String adCode = mInitInfo.getAdConfigInfo().getVideoReward();
-        String adPosition = "ad_video";
-        showAd(context, AdType.VIDEO_HORIZON, adPosition, adCode, callback);
-    }
-
     public void showInsertAd(Context context, AdCallback callback) {
-        String adCode = mInitInfo.getAdConfigInfo().getVideoReward();
+        String adCode = mInitInfo.getAdConfigInfo().getInster();
         String adPosition = "ad_insert";
         showAd(context, AdType.INSERT, adPosition, adCode, callback);
     }
+
+    public void showExpressAd(Context context, AdCallback callback) {
+        String adCode = mInitInfo.getAdConfigInfo().getExpress();
+        String adPosition = "ad_express";
+        showAd(context, AdType.EXPRESS, adPosition, adCode, callback);
+    }
+
+    public void showFullScreenVideoVerticalAd(Context context, AdCallback callback) {
+        String adCode = mInitInfo.getAdConfigInfo().getFullScreenVideoVertical();
+        String adPosition = "ad_full_screen_video";
+        showAd(context, AdType.FULL_SCREEN_VIDEO_VERTICAL, adPosition, adCode, callback);
+    }
+
+    public void showFullScreenVideoHorizontalAd(Context context, AdCallback callback) {
+        String adCode = mInitInfo.getAdConfigInfo().getFullScreenVideoHorizontal();
+        String adPosition = "ad_full_screen_video";
+        showAd(context, AdType.FULL_SCREEN_VIDEO_HORIZON, adPosition, adCode, callback);
+    }
+
+    public void showRewardVideoVerticalAd(Context context, AdCallback callback) {
+        String adCode = mInitInfo.getAdConfigInfo().getRewardVideoVertical();
+        String adPosition = "ad_rewad_video";
+        showAd(context, AdType.REWARD_VIDEO_VERTICAL, adPosition, adCode, callback);
+    }
+
+    public void showRewardVideoHorizontalAd(Context context, AdCallback callback) {
+        String adCode = mInitInfo.getAdConfigInfo().getRewardVideoHorizontal();
+        String adPosition = "ad_rewad_video";
+        showAd(context, AdType.REWARD_VIDEO_HORIZON, adPosition, adCode, callback);
+    }
+
+
 }
