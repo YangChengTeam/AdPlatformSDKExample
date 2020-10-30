@@ -17,6 +17,14 @@
       - 开屏 
          - adPlatformSDK.showSplashAd()
       - 激励视频  
-         - adPlatformSDK.showRewardAd()
+         - 竖屏
+             - adPlatformSDK.showVideoRewardVerticalAd()
+         - 横屏
+             - adPlatformSDK.showVideoRewardHorizontalAd()
+      - 全屏视频  
+               - 竖屏
+                   - adPlatformSDK.showVideoVerticalAd()
+               - 横屏
+                   - adPlatformSDK.showVideoHorizontalAd()
       - 插屏 
          - adPlatformSDK.showInsertAd()

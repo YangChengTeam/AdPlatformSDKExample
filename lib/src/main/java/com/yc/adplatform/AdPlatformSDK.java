@@ -185,10 +185,28 @@ public class AdPlatformSDK {
         showAd(context, AdType.SPLASH, adPosition, adCode, callback, containerView);
     }
 
-    public void showRewardAd(Context context, AdCallback callback) {
+    public void showVideoRewardVerticalAd(Context context, AdCallback callback) {
         String adCode = mInitInfo.getAdConfigInfo().getVideoReward();
-        String adPosition = "ad_rewad";
-        showAd(context, AdType.SPLASH, adPosition, adCode, callback);
+        String adPosition = "ad_video_reward";
+        showAd(context, AdType.VIDEO_REWARD, adPosition, adCode, callback);
+    }
+
+    public void showVideoRewardHorizontalAd(Context context, AdCallback callback) {
+        String adCode = mInitInfo.getAdConfigInfo().getVideoReward();
+        String adPosition = "ad_video_reward";
+        showAd(context, AdType.VIDEO_REWARD_HORIZON, adPosition, adCode, callback);
+    }
+
+    public void showVideoVerticalAd(Context context, AdCallback callback) {
+        String adCode = mInitInfo.getAdConfigInfo().getVideoReward();
+        String adPosition = "ad_video";
+        showAd(context, AdType.VIDEO, adPosition, adCode, callback);
+    }
+
+    public void showVideoHorizontalAd(Context context, AdCallback callback) {
+        String adCode = mInitInfo.getAdConfigInfo().getVideoReward();
+        String adPosition = "ad_video";
+        showAd(context, AdType.VIDEO_HORIZON, adPosition, adCode, callback);
     }
 
     public void showInsertAd(Context context, AdCallback callback) {
