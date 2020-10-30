@@ -1,5 +1,9 @@
 # "小游戏SDK” 对接文档
 
+
+- 示例
+   -  [MainActivity.java](https://github.com/YangChengTeam/AdPlatformSDKExample/blob/master/app/src/main/java/com/yc/adplatformsdkexample/MainActivity.java)
+
 - 配置
   - 导入aar open_ad_sdk.aar  [下载open_ad_sdk](https://github.com/YangChengTeam/AdPlatformSDKExample/blob/master/app/libs/open_ad_sdk.aar)
   - 根目录build.gradle maven配置  [查看](https://github.com/YangChengTeam/AdPlatformSDKExample/blob/master/build.gradle)
