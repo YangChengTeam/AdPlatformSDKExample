@@ -8,4 +8,5 @@ public enum AdType {
     REWARD_VIDEO_VERTICAL, //激励视频,竖版
     INSERT,  //插屏
     EXPRESS, //信息流
+    BANNER,
 }

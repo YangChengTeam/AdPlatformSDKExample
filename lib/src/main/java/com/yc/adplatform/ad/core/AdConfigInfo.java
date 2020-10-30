@@ -7,6 +7,7 @@ public class AdConfigInfo {
     private String splash;
     private String inster;
     private String express;
+    private String banner;
 
     private String rewardVideoHorizontal;
     private String rewardVideoVertical;
@@ -85,6 +86,14 @@ public class AdConfigInfo {
 
     public void setExpress(String express) {
         this.express = express;
+    }
+
+    public String getBanner() {
+        return banner;
+    }
+
+    public void setBanner(String banner) {
+        this.banner = banner;
     }
 
     public boolean isDebug() {
