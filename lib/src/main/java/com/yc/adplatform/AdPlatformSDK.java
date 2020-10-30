@@ -2,7 +2,6 @@ package com.yc.adplatform;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.tencent.mmkv.MMKV;
@@ -80,57 +79,80 @@ public class AdPlatformSDK {
         HttpConfig.setDefaultParams(params);
     }
 
-
     private InitInfo mInitInfo;
     private String mAppId;
 
-    public interface InitCallback {
-        void onSuccess();
-
-        void onFailure();
+    public void setAdConfigInfo(AdConfigInfo adConfigInfo) {
+        this.mInitInfo.setAdConfigInfo(adConfigInfo);
     }
 
+    public interface InitCallback {
+        void onSuccess();  // 初始化成功
+
+        void onFailure(); // 初始化失嵊
+
+        void onAdInitSuccess(); // 广告初始化成功
+
+        void onAdInitFailure(); // 广告初始化失嵊
+    }
+
+    private int initCount = 3;
     public void init(final Context context, String appId, final InitCallback initCallback) {
-        this.mAppId = appId;
+
+        this.mInitInfo = new InitInfo();
+        this.mAppId    = appId;
+
+        boolean isInitSuccess = false;
+
         new InitEngin(context).getInItInfo().subscribe(new Action1<ResultInfo<InitInfo>>() {
             @Override
             public void call(ResultInfo<InitInfo> initInfoResultInfo) {
+
                 if (initInfoResultInfo != null && initInfoResultInfo.getCode() == 1 && initInfoResultInfo.getData() != null) {
                     AdPlatformSDK.this.mInitInfo = initInfoResultInfo.getData();
                     if (initCallback != null) {
-                        AdConfigInfo adConfigInfo = mInitInfo.getAdConfigInfo();
-                        SAdSDK.getImpl().initAd(context, adConfigInfo, new InitAdCallback() {
-                            @Override
-                            public void onSuccess() {
-                                SAdSDK.getImpl().setAdConfigInfo(mInitInfo.getAdConfigInfo());
-                                initCallback.onSuccess();
-                            }
-
-                            @Override
-                            public void onFailure(AdError adError) {
-                                Log.d("00671 securityhttp ", "initAd onFailure: " + adError.getMessage());
-                                if (initCallback != null) {
-                                    initCallback.onFailure();
-                                }
-                            }
-                        });
-
+                        initCallback.onSuccess();
                     }
+                }
+
+                if (!isInitSuccess && --initCount > 0) {
+                    init(context, appId, initCallback);
                     return;
                 }
 
                 if (initCallback != null) {
                     initCallback.onFailure();
                 }
+
+                AdConfigInfo adConfigInfo = mInitInfo.getAdConfigInfo();
+                SAdSDK.getImpl().initAd(context, adConfigInfo, new InitAdCallback() {
+                    @Override
+                    public void onSuccess() {
+                        SAdSDK.getImpl().setAdConfigInfo(mInitInfo.getAdConfigInfo());
+                        if (initCallback != null) {
+                            initCallback.onAdInitSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(AdError adError) {
+                        if (initCallback != null) {
+                            initCallback.onAdInitFailure();
+                        }
+                    }
+                });
+
             }
         });
     }
 
     private void sendClickLog(String adPosition, String adCode) {
+        if (mInitInfo == null) return;
         AdLog.sendLog(mInitInfo.getIp(), 12345, mAppId, "0", adPosition, adCode, "click");
     }
 
     private void sendShowLog(String adPosition, String adCode) {
+        if (mInitInfo == null) return;
         AdLog.sendLog(mInitInfo.getIp(), 12345, mAppId, "0", adPosition, adCode, "show");
     }
 
