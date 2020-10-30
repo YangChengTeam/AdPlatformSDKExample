@@ -3,12 +3,15 @@ package com.yc.adplatform.ad.core;
 public class AdConfigInfo {
     private String appId;
     private String appName;
-    private String videoVertical;
-    private String videoRewardHorizontal;
-    private String videoReward;
-    private String videoHorizontal;
+
     private String splash;
     private String inster;
+    private String express;
+
+    private String rewardVideoHorizontal;
+    private String rewardVideoVertical;
+    private String fullScreenVideoVertical;
+    private String fullScreenVideoHorizontal;
 
     private boolean isDebug = true;
 
@@ -28,36 +31,36 @@ public class AdConfigInfo {
         this.appName = appName;
     }
 
-    public String getVideoVertical() {
-        return videoVertical;
+    public String getFullScreenVideoVertical() {
+        return fullScreenVideoVertical;
     }
 
-    public void setVideoVertical(String videoVertical) {
-        this.videoVertical = videoVertical;
+    public void setFullScreenVideoVertical(String fullScreenVideoVertical) {
+        this.fullScreenVideoVertical = fullScreenVideoVertical;
     }
 
-    public String getVideoRewardHorizontal() {
-        return videoRewardHorizontal;
+    public String getRewardVideoHorizontal() {
+        return rewardVideoHorizontal;
     }
 
-    public void setVideoRewardHorizontal(String videoRewardHorizontal) {
-        this.videoRewardHorizontal = videoRewardHorizontal;
+    public void setRewardVideoHorizontal(String rewardVideoHorizontal) {
+        this.rewardVideoHorizontal = rewardVideoHorizontal;
     }
 
-    public String getVideoReward() {
-        return videoReward;
+    public String getRewardVideoVertical() {
+        return rewardVideoVertical;
     }
 
-    public void setVideoReward(String videoReward) {
-        this.videoReward = videoReward;
+    public void setRewardVideoVertical(String rewardVideoVertical) {
+        this.rewardVideoVertical = rewardVideoVertical;
     }
 
-    public String getVideoHorizontal() {
-        return videoHorizontal;
+    public String getFullScreenVideoHorizontal() {
+        return fullScreenVideoHorizontal;
     }
 
-    public void setVideoHorizontal(String videoHorizontal) {
-        this.videoHorizontal = videoHorizontal;
+    public void setFullScreenVideoHorizontal(String fullScreenVideoHorizontal) {
+        this.fullScreenVideoHorizontal = fullScreenVideoHorizontal;
     }
 
     public String getSplash() {
@@ -76,6 +79,13 @@ public class AdConfigInfo {
         this.inster = inster;
     }
 
+    public String getExpress() {
+        return express;
+    }
+
+    public void setExpress(String express) {
+        this.express = express;
+    }
 
     public boolean isDebug() {
         return isDebug;

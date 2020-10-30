@@ -185,15 +185,41 @@ public class AdPlatformSDK {
         showAd(context, AdType.SPLASH, adPosition, adCode, callback, containerView);
     }
 
-    public void showRewardAd(Context context, AdCallback callback) {
-        String adCode = mInitInfo.getAdConfigInfo().getVideoReward();
-        String adPosition = "ad_rewad";
-        showAd(context, AdType.SPLASH, adPosition, adCode, callback);
-    }
-
     public void showInsertAd(Context context, AdCallback callback) {
-        String adCode = mInitInfo.getAdConfigInfo().getVideoReward();
+        String adCode = mInitInfo.getAdConfigInfo().getInster();
         String adPosition = "ad_insert";
         showAd(context, AdType.INSERT, adPosition, adCode, callback);
     }
+    
+    public void showExpressAd(Context context, AdCallback callback) {
+        String adCode = mInitInfo.getAdConfigInfo().getExpress();
+        String adPosition = "ad_express";
+        showAd(context, AdType.EXPRESS, adPosition, adCode, callback);
+    }
+
+    public void showFullScreenVideoVerticalAd(Context context, AdCallback callback) {
+        String adCode = mInitInfo.getAdConfigInfo().getFullScreenVideoVertical();
+        String adPosition = "ad_full_screen_video";
+        showAd(context, AdType.FULL_SCREEN_VIDEO_VERTICAL, adPosition, adCode, callback);
+    }
+
+    public void showFullScreenVideoHorizontalAd(Context context, AdCallback callback) {
+        String adCode = mInitInfo.getAdConfigInfo().getFullScreenVideoHorizontal();
+        String adPosition = "ad_full_screen_video";
+        showAd(context, AdType.FULL_SCREEN_VIDEO_HORIZON, adPosition, adCode, callback);
+    }
+
+    public void showRewardVideoVerticalAd(Context context, AdCallback callback) {
+        String adCode = mInitInfo.getAdConfigInfo().getRewardVideoVertical();
+        String adPosition = "ad_rewad_video";
+        showAd(context, AdType.REWARD_VIDEO_VERTICAL, adPosition, adCode, callback);
+    }
+
+    public void showRewardVideoHorizontalAd(Context context, AdCallback callback) {
+        String adCode = mInitInfo.getAdConfigInfo().getRewardVideoHorizontal();
+        String adPosition = "ad_rewad_video";
+        showAd(context, AdType.REWARD_VIDEO_HORIZON, adPosition, adCode, callback);
+    }
+
+
 }

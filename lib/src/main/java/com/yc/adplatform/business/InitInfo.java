@@ -25,11 +25,11 @@ public class InitInfo {
             adConfigInfo = new AdConfigInfo();
             adConfigInfo.setAppId("5107713");
             adConfigInfo.setAppName("乐乐游戏_android");
-            adConfigInfo.setVideoVertical("945501615");
-            adConfigInfo.setVideoReward("945501615");
-            adConfigInfo.setVideoRewardHorizontal("945501615");
-            adConfigInfo.setVideoHorizontal("945501615");
-            adConfigInfo.setVideoVertical("945501615");
+            adConfigInfo.setFullScreenVideoVertical("945501615");
+            adConfigInfo.setRewardVideoVertical("945501615");
+            adConfigInfo.setRewardVideoHorizontal("945501615");
+            adConfigInfo.setFullScreenVideoHorizontal("945501615");
+            adConfigInfo.setFullScreenVideoVertical("945501615");
             adConfigInfo.setSplash("887384131");
             adConfigInfo.setInster("945550532");
             adConfigInfo.setDebug(false);
