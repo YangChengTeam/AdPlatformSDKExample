@@ -60,6 +60,43 @@ public class STtAdSDk implements ISGameSDK {
         return sTtAdSDk;
     }
 
+
+    private void loadBannerAd(String bannerId, AdCallback adCallback) {
+        AdSlot adSlot = new AdSlot.Builder()
+                .setCodeId(bannerId) //广告位id
+                .setSupportDeepLink(true)
+                .setAdCount(1) //请求广告数量为1到3条
+                .setExpressViewAcceptedSize(500, 200) //期望个性化模板广告view的size,单位dp
+                .setImageAcceptedSize(640, 320)//这个参数设置即可，不影响个性化模板广告的size
+                .build();
+
+        TTAdManagerHolder.get().createAdNative(mContext.get()).loadBannerExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
+            @Override
+            public void onError(int code, String message) {
+                if (mSplashContainer != null) {
+                    mSplashContainer.get().removeAllViews();
+                }
+                AdError adError = new AdError();
+                adError.setMessage(message);
+                adError.setCode(String.valueOf(code));
+                if (adCallback != null) {
+                    adCallback.onNoAd(adError);
+                }
+            }
+
+            @Override
+            public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
+                if (ads == null || ads.size() == 0) {
+                    return;
+                }
+                TTNativeExpressAd mTTAd = ads.get(0);
+                mTTAd.setSlideIntervalTime(30 * 1000);//设置轮播间隔 ms,不调用则不进行轮播展示
+                bindAdListenerExpress(mTTAd, adCallback);
+                mTTAd.render();//调用render开始渲染广告
+            }
+        });
+    }
+
     private void loadExpressAd(String feedId, AdCallback adCallback) {
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(feedId)
@@ -228,91 +265,9 @@ public class STtAdSDk implements ISGameSDK {
                     return;
                 }
                 TTNativeExpressAd ttNativeExpressAd = ads.get(0);
-                bindAdListener(ttNativeExpressAd, callback);
+                bindAdListenerExpress(ttNativeExpressAd, callback);
                 startTime = System.currentTimeMillis();
                 ttNativeExpressAd.render();
-            }
-        });
-    }
-
-    private void bindAdListener(TTNativeExpressAd ad, AdCallback callback) {
-        ad.setExpressInteractionListener(new TTNativeExpressAd.AdInteractionListener() {
-            @Override
-            public void onAdDismiss() {
-                Log.e(TAG, "广告关闭");
-                if (callback != null)
-                    callback.onDismissed();
-            }
-
-            @Override
-            public void onAdClicked(View view, int type) {
-                Log.e(TAG, "广告被点击");
-                if (callback != null)
-                    callback.onClick();
-            }
-
-            @Override
-            public void onAdShow(View view, int type) {
-                Log.e(TAG, "广告展示");
-                if (callback != null)
-                    callback.onPresent();
-            }
-
-            @Override
-            public void onRenderFail(View view, String msg, int code) {
-                Log.e(TAG, "渲染失败 render fail:" + (System.currentTimeMillis() - startTime));
-                AdError adError = new AdError();
-                adError.setMessage("渲染失败 " + msg);
-                adError.setCode(String.valueOf(code));
-                if (callback != null)
-                    callback.onNoAd(adError);
-            }
-
-            @Override
-            public void onRenderSuccess(View view, float width, float height) {
-                Log.e(TAG, "渲染成功 render suc:" + (System.currentTimeMillis() - startTime));
-                //返回view的宽高 单位 dp
-                ad.showInteractionExpressAd((Activity) (mContext.get()));
-            }
-        });
-
-        if (ad.getInteractionType() != TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
-            return;
-        }
-        ad.setDownloadListener(new TTAppDownloadListener() {
-            @Override
-            public void onIdle() {
-//                TToast.show(mContext.get(), "点击开始下载", Toast.LENGTH_LONG);
-            }
-
-            @Override
-            public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
-                if (!mHasShowDownloadActive) {
-                    mHasShowDownloadActive = true;
-                    Log.d(TAG, "onDownloadActive: " + "下载中，点击暂停");
-//                    TToast.show(mContext.get(), "下载中，点击暂停", Toast.LENGTH_LONG);
-                }
-            }
-
-            @Override
-            public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
-                Log.d(TAG, "onDownloadPaused: " + "下载暂停，点击继续");
-//                TToast.show(mContext.get(), "下载暂停，点击继续", Toast.LENGTH_LONG);
-            }
-
-            @Override
-            public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
-//                TToast.show(mContext.get(), "下载失败，点击重新下载", Toast.LENGTH_LONG);
-            }
-
-            @Override
-            public void onInstalled(String fileName, String appName) {
-//                TToast.show(mContext.get(), "安装完成，点击图片打开", Toast.LENGTH_LONG);
-            }
-
-            @Override
-            public void onDownloadFinished(long totalBytes, String fileName, String appName) {
-//                TToast.show(mContext.get(), "点击安装", Toast.LENGTH_LONG);
             }
         });
     }
@@ -355,6 +310,10 @@ public class STtAdSDk implements ISGameSDK {
 
 
         switch (type) {
+            case BANNER:
+                mSplashContainer = new WeakReference<>(viewGroup);
+                loadBannerAd(mAdConfigInfo.getBanner(), callback);
+                break;
             case EXPRESS:
                 mSplashContainer = new WeakReference<>(viewGroup);
                 loadExpressAd(mAdConfigInfo.getExpress(), callback);
@@ -381,6 +340,7 @@ public class STtAdSDk implements ISGameSDK {
                 break;
         }
     }
+
 
     private TTRewardVideoAd mttRewardVideoAd;
 

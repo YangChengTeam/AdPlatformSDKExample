@@ -185,6 +185,12 @@ public class AdPlatformSDK {
         showAd(context, AdType.SPLASH, adPosition, adCode, callback, containerView);
     }
 
+    public void showBannerAd(Context context, AdCallback callback, FrameLayout containerView) {
+        String adCode = mInitInfo.getAdConfigInfo().getBanner();
+        String adPosition = "ad_banner";
+        showAd(context, AdType.BANNER, adPosition, adCode, callback, containerView);
+    }
+
     public void showInsertAd(Context context, AdCallback callback) {
         String adCode = mInitInfo.getAdConfigInfo().getInster();
         String adPosition = "ad_insert";
