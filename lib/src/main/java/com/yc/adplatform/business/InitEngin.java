@@ -19,7 +19,7 @@ public class InitEngin extends BaseEngin {
 
     @Override
     public String getUrl() {
-        return "http://a.6ll.com/v1/Index/init?rsa=5";
+        return "http://qudaotj.tools86.com/api/v1.user/imeiLogin";
     }
 
     public Observable<ResultInfo<InitInfo>> getInItInfo() {

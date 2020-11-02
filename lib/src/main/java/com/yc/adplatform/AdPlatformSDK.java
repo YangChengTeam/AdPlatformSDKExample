@@ -45,18 +45,7 @@ public class AdPlatformSDK {
 
         GoagalInfo.get().init(context);
         HttpConfig.setPublickey("-----BEGIN PUBLIC KEY-----\n" +
-                "MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAq1wNiX3iQt+Q7juXZDNR\n" +
-                "Eq2jGqx+2pXM4ddoZ1rkHb3XJFhrBguI/R11IfmTioPlTnheJqYkJf0NGzzxW2t1\n" +
-                "nDKwbjoZ+d7UMehCDV44+FQMtzhRAFjmcQIXn6AaL2bkJFzHvoTtYPqgqgT5V4L6\n" +
-                "+DhLSuPSwIVAC1aw1+iUk3jbg3ETzERSS6LDHTRi2ng7rpKAeHKeJ2RtbrcetCxv\n" +
-                "YF+6QabnJhZGtr6cvp9CtFv5bSc2JsCqbJbsDGM6OPAjQjtpmImxQiXcI1gko8WP\n" +
-                "+k1nx9GPJBhtdAXORRGRoHA8fUCveAJPDw1jSF3lBDf+1BHx+XeVX4/sVybd5Rn3\n" +
-                "IE21UeuF+kbmwULJKUDzQNIwlXA+k4faRhdKeFCOeqldozwhP+575L/vVlyvxx/M\n" +
-                "UJdA4vUziyO1l/IQEGzJ7b4AWfJ6sQEKDjODuLM+DM9MAuYddFnNfKj8XVi3jx9y\n" +
-                "0OOAb/4Rb3UPeOUF9R4Sr0nLmL/1ITL8/9rJaue/e/D7H4xfQNbCtSTPhsa/+UOt\n" +
-                "j3AQsNUjqkoLMXm7vtXEIshXEm4mlmMl98LsXyK3B6lMiV7jO4Vyp8muga8I/nH3\n" +
-                "Snw5e86AHSZdnbQcLTDx9sgqN2mSL3MqLp9oiL4KGxNdNdt8EunGRycTsj09o7oz\n" +
-                "Lfxf+/8xTiWygyUTThX+/GUCAwEAAQ==\n" +
+                "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnEN9PULzGdCDba7vcLUOq2gbWpl1HvEOaiTKzLjHx46JoqwvHB5Pxb5ICirmyp66WLysHsDi7D0as4426iN9Y5NqCKAbT5RbAqbLYfBMNO56MoN78av/mu3XO8shxUThFQcpapr/e65PwLHgoQjdb3KpY2U3W0I0gzFKdaES5Qcc3sp43V4jCiyGPm9cxpEh0hr4+onMFB16M7Ai0K/V/HPnlR/ufYw7eG/qAiO8+FCn0EdbCd7y0EEB3pXG98xKf21shIM7Ikergd/06oLKvKB2e6Y4u3N7MVDDN/Vm+75iwIUSQYdaFwjhRzkFiPknSoOnitCxKrsDiXYmWCLrAQIDAQAB" +
                 "-----END PUBLIC KEY-----");
 
         String agent_id = "1";
@@ -67,7 +56,7 @@ public class AdPlatformSDK {
 
         params.put("agent_id", agent_id);
         params.put("device_type", "android");
-        params.put("imeil", GoagalInfo.get().uuid);
+        params.put("imei", GoagalInfo.get().uuid);
         params.put("ts", System.currentTimeMillis() + "");
         String sv = android.os.Build.MODEL.contains(android.os.Build.BRAND) ? android.os.Build.MODEL + " " + android
                 .os.Build.VERSION.RELEASE : Build.BRAND + " " + android
@@ -105,7 +94,7 @@ public class AdPlatformSDK {
         this.mInitInfo = new InitInfo();
         this.mAppId = appId;
 
-        boolean isInitSuccess = false;
+        final boolean[] isInitSuccess = {false};
 
         new InitEngin(context).getInItInfo().subscribe(new Action1<ResultInfo<InitInfo>>() {
             @Override
@@ -115,22 +104,28 @@ public class AdPlatformSDK {
                     AdPlatformSDK.this.mInitInfo = initInfoResultInfo.getData();
                     if (initCallback != null) {
                         initCallback.onSuccess();
+                        isInitSuccess[0] = true;
                         LogUtil.msg("init: 初始化成功");
                     }
                 }
 
-                if (!isInitSuccess && --initCount > 0) {
+                if (!isInitSuccess[0] && --initCount > 0) {
                     init(context, appId, initCallback);
                     LogUtil.msg("reinit: 初始化次数" + initCount);
                     return;
                 }
 
-                if (initCallback != null) {
+                if (!isInitSuccess[0] && initCallback != null) {
                     initCallback.onFailure();
                     LogUtil.msg("init: 初始化失败");
                 }
 
                 AdConfigInfo adConfigInfo = mInitInfo.getAdConfigInfo();
+                if(adConfigInfo == null){
+                    initCallback.onAdInitFailure();
+                    LogUtil.msg("adinit: 广告初始化失败 未配置默认广告信息");
+                    return;
+                }
                 SAdSDK.getImpl().initAd(context, adConfigInfo, new InitAdCallback() {
                     @Override
                     public void onSuccess() {
@@ -146,7 +141,7 @@ public class AdPlatformSDK {
                         if (initCallback != null) {
                             initCallback.onAdInitFailure();
                         }
-                        LogUtil.msg("adinit: 广告初始化失败");
+                        LogUtil.msg("adinit: 广告初始化失败 " + adError.getMessage());
                     }
                 });
 
