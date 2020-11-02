@@ -44,7 +44,9 @@ public class AdPlatformSDK {
         MMKV.initialize(context);
 
         GoagalInfo.get().init(context);
-        HttpConfig.setPublickey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnEN9PULzGdCDba7vcLUOq2gbWpl1HvEOaiTKzLjHx46JoqwvHB5Pxb5ICirmyp66WLysHsDi7D0as4426iN9Y5NqCKAbT5RbAqbLYfBMNO56MoN78av/mu3XO8shxUThFQcpapr/e65PwLHgoQjdb3KpY2U3W0I0gzFKdaES5Qcc3sp43V4jCiyGPm9cxpEh0hr4+onMFB16M7Ai0K/V/HPnlR/ufYw7eG/qAiO8+FCn0EdbCd7y0EEB3pXG98xKf21shIM7Ikergd/06oLKvKB2e6Y4u3N7MVDDN/Vm+75iwIUSQYdaFwjhRzkFiPknSoOnitCxKrsDiXYmWCLrAQIDAQAB");
+        HttpConfig.setPublickey("-----BEGIN PUBLIC KEY-----\n" +
+                "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnEN9PULzGdCDba7vcLUOq2gbWpl1HvEOaiTKzLjHx46JoqwvHB5Pxb5ICirmyp66WLysHsDi7D0as4426iN9Y5NqCKAbT5RbAqbLYfBMNO56MoN78av/mu3XO8shxUThFQcpapr/e65PwLHgoQjdb3KpY2U3W0I0gzFKdaES5Qcc3sp43V4jCiyGPm9cxpEh0hr4+onMFB16M7Ai0K/V/HPnlR/ufYw7eG/qAiO8+FCn0EdbCd7y0EEB3pXG98xKf21shIM7Ikergd/06oLKvKB2e6Y4u3N7MVDDN/Vm+75iwIUSQYdaFwjhRzkFiPknSoOnitCxKrsDiXYmWCLrAQIDAQAB\n" +
+                "-----END PUBLIC KEY-----");
 
         String agent_id = "1";
         Map<String, String> params = new HashMap<>();
@@ -94,7 +96,7 @@ public class AdPlatformSDK {
 
         final boolean[] isInitSuccess = {false};
 
-        new InitEngin(context).getInItInfo().subscribe(new Action1<ResultInfo<InitInfo>>() {
+        new InitEngin(context).getInItInfo(appId).subscribe(new Action1<ResultInfo<InitInfo>>() {
             @Override
             public void call(ResultInfo<InitInfo> initInfoResultInfo) {
 

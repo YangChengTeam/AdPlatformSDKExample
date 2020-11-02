@@ -22,10 +22,11 @@ public class InitEngin extends BaseEngin {
         return "http://qudaotj.tools86.com/api/v1.user/imeiLogin";
     }
 
-    public Observable<ResultInfo<InitInfo>> getInItInfo() {
+    public Observable<ResultInfo<InitInfo>> getInItInfo(String appId) {
         Map<String, String> params = new HashMap<>();
+        params.put("app_id", appId);
         return rxpost(new TypeReference<ResultInfo<InitInfo>>() {
-        }.getType(), params, false, false, false);
+        }.getType(), params, true, true, true);
     }
 
 }
