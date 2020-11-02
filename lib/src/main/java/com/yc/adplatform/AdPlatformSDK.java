@@ -2,6 +2,7 @@ package com.yc.adplatform;
 
 import android.content.Context;
 import android.os.Build;
+import android.text.TextUtils;
 import android.widget.FrameLayout;
 
 import com.tencent.mmkv.MMKV;
@@ -101,7 +102,6 @@ public class AdPlatformSDK {
             public void call(ResultInfo<InitInfo> initInfoResultInfo) {
 
                 if (initInfoResultInfo != null && initInfoResultInfo.getCode() == 1 && initInfoResultInfo.getData() != null) {
-                    AdPlatformSDK.this.mInitInfo = initInfoResultInfo.getData();
                     if (initCallback != null) {
                         initCallback.onSuccess();
                         isInitSuccess[0] = true;
@@ -120,10 +120,16 @@ public class AdPlatformSDK {
                     LogUtil.msg("init: 初始化失败");
                 }
 
-                AdConfigInfo adConfigInfo = mInitInfo.getAdConfigInfo();
-                if(adConfigInfo == null){
+                InitInfo initInfo = initInfoResultInfo.getData();
+                AdConfigInfo adConfigInfo = initInfo.getAdConfigInfo();
+                if(adConfigInfo == null || TextUtils.isEmpty(adConfigInfo.getAppId())){
+                    initInfo.setAdConfigInfo(mInitInfo.getAdConfigInfo());
+                }
+                mInitInfo = initInfo;
+
+                if(adConfigInfo == null || TextUtils.isEmpty(adConfigInfo.getAppId())){
                     initCallback.onAdInitFailure();
-                    LogUtil.msg("adinit: 广告初始化失败 未配置默认广告信息");
+                    LogUtil.msg("adinit: 广告初始化失败 未配置广告信息");
                     return;
                 }
                 SAdSDK.getImpl().initAd(context, adConfigInfo, new InitAdCallback() {

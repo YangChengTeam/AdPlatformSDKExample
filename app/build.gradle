@@ -5,7 +5,7 @@ android {
     buildToolsVersion "30.0.1"
 
     defaultConfig {
-        applicationId "com.yc.adplatformsdkexample"
+        applicationId "com.whychl.TrickyCastle"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 1
@@ -13,6 +13,34 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        ycD {
+            storeFile file('android.KeyStore')
+            storePassword "123456"
+            keyAlias "key0"
+            keyPassword "123456"
+        }
+        ycR {
+            storeFile file('android.KeyStore')
+            storePassword "123456"
+            keyAlias "key0"
+            keyPassword "123456"
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.ycR
+            shrinkResources false
+            minifyEnabled false
+        }
+        debug {
+            signingConfig signingConfigs.ycD
+            minifyEnabled false
+        }
+    }
+
 
     buildTypes {
         release {
@@ -30,6 +58,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation 'com.yc.adplatformsdk:aar:1.0.7'
+    implementation 'com.yc.adplatformsdk:aar:1.0.8'
 
 }

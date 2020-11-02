@@ -7,10 +7,10 @@ import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.whychl.TrickyCastle.R;
 import com.yc.adplatform.AdPlatformSDK;
 import com.yc.adplatform.ad.core.AdCallback;
 import com.yc.adplatform.ad.core.AdError;
-import com.yc.adplatform.securityhttp.utils.LogUtil;
 import com.yc.adplatform.securityhttp.utils.VUiKit;
 
 public class SplashActivity extends AppCompatActivity {
@@ -25,32 +25,8 @@ public class SplashActivity extends AppCompatActivity {
 
         mFrameLayout = findViewById(R.id.fl_ad_container);
 
-        final AdPlatformSDK adPlatformSDK = AdPlatformSDK.getInstance(this);
 
-        adPlatformSDK.init(this, "1", new AdPlatformSDK.InitCallback() {
-            @Override
-            public void onSuccess() {
-                LogUtil.msg("----onSuccess");
-            }
-
-            @Override
-            public void onFailure() {
-                LogUtil.msg("----onFailure");
-            }
-
-            @Override
-            public void onAdInitSuccess() {
-                LogUtil.msg("----onAdInitSuccess");
-
-                showSplash();
-            }
-
-            @Override
-            public void onAdInitFailure() {
-                LogUtil.msg("----onAdInitFailure");
-            }
-        });
-
+        showSplash();
 
     }
 

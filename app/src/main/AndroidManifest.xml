@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yc.adplatformsdkexample">
+    package="com.whychl.TrickyCastle">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -19,9 +19,10 @@
         android:networkSecurityConfig="@xml/network_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" />
-        <activity android:name=".SplashActivity">
+        android:theme="@style/AppTheme"
+        android:name="com.yc.adplatformsdkexample.App">
+        <activity android:name="com.yc.adplatformsdkexample.MainActivity" />
+        <activity android:name="com.yc.adplatformsdkexample.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
