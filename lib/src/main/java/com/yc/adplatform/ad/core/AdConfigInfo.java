@@ -1,6 +1,7 @@
 package com.yc.adplatform.ad.core;
 
 public class AdConfigInfo {
+
     private String appId;
     private String appName;
 
