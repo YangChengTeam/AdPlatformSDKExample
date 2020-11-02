@@ -1,23 +1,17 @@
 package com.yc.adplatformsdkexample;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.yc.adplatform.AdPlatformSDK;
 import com.yc.adplatform.ad.core.AdCallback;
 import com.yc.adplatform.ad.core.AdError;
-import com.yc.adplatform.ad.core.AdType;
-import com.yc.adplatform.ad.core.SAdSDK;
 import com.yc.adplatform.securityhttp.utils.LogUtil;
 import com.yc.adplatform.securityhttp.utils.VUiKit;
-
-import java.lang.ref.WeakReference;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -37,14 +31,23 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onSuccess() {
                 LogUtil.msg("----onSuccess");
-//                adPlatformSDK.showInsertAd(SplashActivity.this, null);
-
-                showSplash();
             }
 
             @Override
             public void onFailure() {
                 LogUtil.msg("----onFailure");
+            }
+
+            @Override
+            public void onAdInitSuccess() {
+                LogUtil.msg("----onAdInitSuccess");
+
+                showSplash();
+            }
+
+            @Override
+            public void onAdInitFailure() {
+                LogUtil.msg("----onAdInitFailure");
             }
         });
 
