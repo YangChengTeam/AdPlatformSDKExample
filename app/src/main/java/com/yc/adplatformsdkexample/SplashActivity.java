@@ -25,9 +25,13 @@ public class SplashActivity extends AppCompatActivity {
 
         mFrameLayout = findViewById(R.id.fl_ad_container);
 
+        VUiKit.postDelayed(2000, new Runnable() {
+            @Override
+            public void run() {
+                showSplash();
 
-        showSplash();
-
+            }
+        });
     }
 
 

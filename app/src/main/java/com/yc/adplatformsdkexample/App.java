@@ -19,6 +19,7 @@ public class App extends Application {
         adConfigInfo.setInster("945568880");
         adConfigInfo.setRewardVideoHorizontal("945573588");
         adPlatformSDK.setAdConfigInfo(adConfigInfo);
+
         adPlatformSDK.init(this, "1", new AdPlatformSDK.InitCallback() {
             @Override
             public void onSuccess() {

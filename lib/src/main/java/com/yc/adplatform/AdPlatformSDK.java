@@ -76,7 +76,7 @@ public class AdPlatformSDK {
     private String mAppId;
 
     public void setAdConfigInfo(AdConfigInfo adConfigInfo) {
-        if(this.mInitInfo == null) {
+        if (this.mInitInfo == null) {
             this.mInitInfo = new InitInfo();
         }
         this.mInitInfo.setAdConfigInfo(adConfigInfo);
@@ -93,16 +93,17 @@ public class AdPlatformSDK {
     }
 
     private int initCount = 3;
+
     public void init(final Context context, String appId, final InitCallback initCallback) {
 
-        if(this.mInitInfo == null) {
+        if (this.mInitInfo == null) {
             this.mInitInfo = new InitInfo();
         }
 
+        final boolean[] isInitSuccess = {false, false};
+        initAd(context, initCallback, isInitSuccess);
+
         this.mAppId = appId;
-
-        final boolean[] isInitSuccess = {false};
-
         new InitEngin(context).getInItInfo(appId).subscribe(new Action1<ResultInfo<InitInfo>>() {
             @Override
             public void call(ResultInfo<InitInfo> initInfoResultInfo) {
@@ -128,35 +129,43 @@ public class AdPlatformSDK {
 
                 InitInfo initInfo = initInfoResultInfo.getData();
                 AdConfigInfo adConfigInfo = initInfo.getAdConfigInfo();
-                if(adConfigInfo == null || TextUtils.isEmpty(adConfigInfo.getAppId())){
+                if (adConfigInfo == null || TextUtils.isEmpty(adConfigInfo.getAppId())) {
                     initInfo.setAdConfigInfo(mInitInfo.getAdConfigInfo());
                 }
                 mInitInfo = initInfo;
 
-                if(adConfigInfo == null || TextUtils.isEmpty(adConfigInfo.getAppId())){
-                    initCallback.onAdInitFailure();
-                    LogUtil.msg("adinit: 广告初始化失败 未配置广告信息");
-                    return;
+                if (!isInitSuccess[1]) {
+                    initAd(context, initCallback, isInitSuccess);
                 }
-                SAdSDK.getImpl().initAd(context, adConfigInfo, new InitAdCallback() {
-                    @Override
-                    public void onSuccess() {
-                        SAdSDK.getImpl().setAdConfigInfo(mInitInfo.getAdConfigInfo());
-                        if (initCallback != null) {
-                            initCallback.onAdInitSuccess();
-                        }
-                        LogUtil.msg("adinit: 广告初始化成功");
-                    }
+            }
+        });
+    }
 
-                    @Override
-                    public void onFailure(AdError adError) {
-                        if (initCallback != null) {
-                            initCallback.onAdInitFailure();
-                        }
-                        LogUtil.msg("adinit: 广告初始化失败 " + adError.getMessage());
-                    }
-                });
+    private void initAd(Context context, InitCallback initCallback, boolean[] isInitSuccess) {
+        AdConfigInfo adConfigInfo = mInitInfo.getAdConfigInfo();
+        if (adConfigInfo == null || TextUtils.isEmpty(adConfigInfo.getAppId())) {
+            initCallback.onAdInitFailure();
+            LogUtil.msg("adinit: 广告初始化失败 未配置广告信息");
+            return;
+        }
+        SAdSDK.getImpl().initAd(context, this.mInitInfo.getAdConfigInfo(), new InitAdCallback() {
+            @Override
+            public void onSuccess() {
+                SAdSDK.getImpl().setAdConfigInfo(mInitInfo.getAdConfigInfo());
+                if (initCallback != null) {
+                    initCallback.onAdInitSuccess();
+                }
+                LogUtil.msg("adinit: 广告初始化成功");
+                isInitSuccess[1] = true;
+            }
 
+            @Override
+            public void onFailure(AdError adError) {
+                if (initCallback != null) {
+                    initCallback.onAdInitFailure();
+                }
+                LogUtil.msg("adinit: 广告初始化失败 " + adError.getMessage());
+                isInitSuccess[0] = true;
             }
         });
     }
