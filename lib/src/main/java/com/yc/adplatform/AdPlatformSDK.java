@@ -18,6 +18,7 @@ import com.yc.adplatform.log.AdLog;
 import com.yc.adplatform.securityhttp.domain.GoagalInfo;
 import com.yc.adplatform.securityhttp.domain.ResultInfo;
 import com.yc.adplatform.securityhttp.net.contains.HttpConfig;
+import com.yc.adplatform.securityhttp.utils.LogUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -77,6 +78,8 @@ public class AdPlatformSDK {
             params.put("version_num", GoagalInfo.get().getPackageInfo(context).versionName + "");
         }
         HttpConfig.setDefaultParams(params);
+
+
     }
 
     private InitInfo mInitInfo;
@@ -100,7 +103,7 @@ public class AdPlatformSDK {
     public void init(final Context context, String appId, final InitCallback initCallback) {
 
         this.mInitInfo = new InitInfo();
-        this.mAppId    = appId;
+        this.mAppId = appId;
 
         boolean isInitSuccess = false;
 
@@ -112,16 +115,19 @@ public class AdPlatformSDK {
                     AdPlatformSDK.this.mInitInfo = initInfoResultInfo.getData();
                     if (initCallback != null) {
                         initCallback.onSuccess();
+                        LogUtil.msg("init: 初始化成功");
                     }
                 }
 
                 if (!isInitSuccess && --initCount > 0) {
                     init(context, appId, initCallback);
+                    LogUtil.msg("reinit: 初始化次数" + initCount);
                     return;
                 }
 
                 if (initCallback != null) {
                     initCallback.onFailure();
+                    LogUtil.msg("init: 初始化失败");
                 }
 
                 AdConfigInfo adConfigInfo = mInitInfo.getAdConfigInfo();
@@ -132,6 +138,7 @@ public class AdPlatformSDK {
                         if (initCallback != null) {
                             initCallback.onAdInitSuccess();
                         }
+                        LogUtil.msg("adinit: 广告初始化成功");
                     }
 
                     @Override
@@ -139,6 +146,7 @@ public class AdPlatformSDK {
                         if (initCallback != null) {
                             initCallback.onAdInitFailure();
                         }
+                        LogUtil.msg("adinit: 广告初始化失败");
                     }
                 });
 
@@ -148,12 +156,12 @@ public class AdPlatformSDK {
 
     private void sendClickLog(String adPosition, String adCode) {
         if (mInitInfo == null) return;
-        AdLog.sendLog(mInitInfo.getIp(), 12345, mAppId, "0", adPosition, adCode, "click");
+        AdLog.sendLog(mInitInfo.getIp(), 41234, mAppId, "0", adPosition, adCode, "click");
     }
 
     private void sendShowLog(String adPosition, String adCode) {
         if (mInitInfo == null) return;
-        AdLog.sendLog(mInitInfo.getIp(), 12345, mAppId, "0", adPosition, adCode, "show");
+        AdLog.sendLog(mInitInfo.getIp(), 41234, mAppId, "0", adPosition, adCode, "show");
     }
 
     private void showAd(Context context, AdType adType, String adPosition, String adCode, AdCallback callback, FrameLayout containerView) {

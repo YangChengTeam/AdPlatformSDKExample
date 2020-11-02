@@ -15,6 +15,8 @@
 - 代码
    -  生成对象 
       - AdPlatformSDK adPlatformSDK = AdPlatformSDK.getInstance(this);
+   -  设置默认广告默认值
+      - adPlatformSDK.setAdConfigInfo()
    -  初始化 
       - adPlatformSDK.init()
    -  调用广告

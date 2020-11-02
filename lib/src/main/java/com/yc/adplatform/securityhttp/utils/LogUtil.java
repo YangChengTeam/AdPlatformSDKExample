@@ -23,7 +23,7 @@ public class LogUtil {
     public static final int W = 3;
     public static final int E = 4;
 
-    private static final String TAG = "securityhttp";
+    private static final String TAG = "AdPlatformSDK";
 
     public static void msg(String msg, int level) {
         if (!DEBUG) return;
