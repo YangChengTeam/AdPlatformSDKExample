@@ -76,6 +76,9 @@ public class AdPlatformSDK {
     private String mAppId;
 
     public void setAdConfigInfo(AdConfigInfo adConfigInfo) {
+        if(this.mInitInfo == null) {
+            this.mInitInfo = new InitInfo();
+        }
         this.mInitInfo.setAdConfigInfo(adConfigInfo);
     }
 
@@ -92,7 +95,10 @@ public class AdPlatformSDK {
     private int initCount = 3;
     public void init(final Context context, String appId, final InitCallback initCallback) {
 
-        this.mInitInfo = new InitInfo();
+        if(this.mInitInfo == null) {
+            this.mInitInfo = new InitInfo();
+        }
+
         this.mAppId = appId;
 
         final boolean[] isInitSuccess = {false};
