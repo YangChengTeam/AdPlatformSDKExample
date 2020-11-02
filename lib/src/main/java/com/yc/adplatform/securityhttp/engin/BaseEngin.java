@@ -30,11 +30,9 @@ import rx.schedulers.Schedulers;
  */
 
 public abstract class BaseEngin<T> {
-    private String key = "";
     private WeakReference<Context> mContext;
 
     public BaseEngin(Context context) {
-        key = new Random().nextInt(10000) + "";
         mContext = new WeakReference<>(context);
     }
 
@@ -46,14 +44,14 @@ public abstract class BaseEngin<T> {
     }
 
     public void cancel() {
-        OKHttpRequest.getImpl().cancel(getUrl() + "&key=" + key);
+        OKHttpRequest.getImpl().cancel(getUrl());
     }
 
     //< 同步请求get 1
     private T get(Type type, Map<String, String> params, Map<String, String> headers, boolean isEncryptResponse) {
         T resultInfo = null;
         try {
-            Response response = OKHttpRequest.getImpl().get(getUrl() + "&key=" + key, params, headers, isEncryptResponse);
+            Response response = OKHttpRequest.getImpl().get(getUrl(), params, headers, isEncryptResponse);
             resultInfo = getResultInfo(response.body, type);
         } catch (Exception e) {
             LogUtil.msg("异常->" + e, LogUtil.W);
@@ -97,7 +95,7 @@ public abstract class BaseEngin<T> {
         }
         T resultInfo = null;
         try {
-            Response response = OKHttpRequest.getImpl().post(getUrl() + "&key=" + key, params, headers, isrsa, iszip, isEncryptResponse);
+            Response response = OKHttpRequest.getImpl().post(getUrl(), params, headers, isrsa, iszip, isEncryptResponse);
             resultInfo = getResultInfo(response.body, type);
         } catch (Exception e) {
             String body = "{\"code\":500, \"message\":\"" + e.getMessage().replaceAll("\"", "'") + "\"}";
@@ -141,7 +139,7 @@ public abstract class BaseEngin<T> {
             public String call(Object o) {
                 String data = "";
                 try {
-                    Response response = OKHttpRequest.getImpl().post(getUrl() + "&key=" + key, header, type, body);
+                    Response response = OKHttpRequest.getImpl().post(getUrl() , header, type, body);
                     if (response != null) {
                         data = response.body;
                     }
@@ -187,7 +185,7 @@ public abstract class BaseEngin<T> {
         }
         T resultInfo = null;
         try {
-            Response response = OKHttpRequest.getImpl().uploadFile(getUrl() + "&key=" + key, upFileInfo, params,
+            Response response = OKHttpRequest.getImpl().uploadFile(getUrl() , upFileInfo, params,
                     headers, isEncryptResponse);
             resultInfo = JSON.parseObject(response.body, type);
         } catch (Exception e) {
