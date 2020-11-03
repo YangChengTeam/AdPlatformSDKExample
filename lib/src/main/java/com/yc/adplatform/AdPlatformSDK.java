@@ -161,12 +161,12 @@ public class AdPlatformSDK {
 
     private void sendClickLog(String adPosition, String adCode) {
         if (mInitInfo == null) return;
-        AdLog.sendLog(mInitInfo.getIp(), 41234, mAppId, "0", adPosition, adCode, "click");
+        AdLog.sendLog(mInitInfo.getIp(), 41234, mAppId, mInitInfo.getUserId(), adPosition, adCode, "click");
     }
 
     private void sendShowLog(String adPosition, String adCode) {
         if (mInitInfo == null) return;
-        AdLog.sendLog(mInitInfo.getIp(), 41234, mAppId, "0", adPosition, adCode, "show");
+        AdLog.sendLog(mInitInfo.getIp(), 41234, mAppId, mInitInfo.getUserId(), adPosition, adCode, "show");
     }
 
     private void showAd(Context context, AdType adType, String adPosition, String adCode, AdCallback callback, FrameLayout containerView) {

@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         AdPlatformSDK adPlatformSDK = AdPlatformSDK.getInstance(this);
         if (view.getId() == R.id.insert_btn) {
-            adPlatformSDK.showInsertAd(this,600, 600, this);
+            adPlatformSDK.showInsertAd(this,300, 200, this);
         } else if (view.getId() == R.id.express_btn) {
             adPlatformSDK.showExpressAd(this,this, (FrameLayout) findViewById(R.id.fl_ad_container));
         } else if (view.getId() == R.id.reward_video_btn) {
