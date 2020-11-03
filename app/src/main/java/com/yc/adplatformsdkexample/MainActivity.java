@@ -2,6 +2,7 @@ package com.yc.adplatformsdkexample;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.express_btn).setOnClickListener(this);
         findViewById(R.id.reward_video_btn).setOnClickListener(this);
         findViewById(R.id.full_video_btn).setOnClickListener(this);
-
+        findViewById(R.id.banner_btn).setOnClickListener(this);
     }
 
     @Override
@@ -30,11 +31,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view.getId() == R.id.insert_btn) {
             adPlatformSDK.showInsertHorizontalAd(this,this);
         } else if (view.getId() == R.id.express_btn) {
-            adPlatformSDK.showExpressAd(this,this);
+            adPlatformSDK.showExpressAd(this,this, (FrameLayout) findViewById(R.id.fl_ad_container));
         } else if (view.getId() == R.id.reward_video_btn) {
             adPlatformSDK.showRewardVideoHorizontalAd(this,this);
         } else if (view.getId() == R.id.full_video_btn) {
             adPlatformSDK.showFullScreenVideoHorizontalAd(this,this);
+        } else if (view.getId() == R.id.banner_btn) {
+            adPlatformSDK.showBannerAd(this,this,  (FrameLayout) findViewById(R.id.fl_ad_container));
         }
     }
 

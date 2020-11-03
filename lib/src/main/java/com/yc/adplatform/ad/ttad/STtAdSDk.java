@@ -60,6 +60,14 @@ public class STtAdSDk implements ISGameSDK {
         return sTtAdSDk;
     }
 
+    private int insertWidth = 300;
+    private int insertHeight = 450;
+
+    public void setInsertSize(int width, int height){
+        this.insertWidth = width;
+        this.insertHeight = height;
+    }
+
 
     private void loadBannerAd(String bannerId, AdCallback adCallback) {
         AdSlot adSlot = new AdSlot.Builder()
@@ -246,7 +254,7 @@ public class STtAdSDk implements ISGameSDK {
                 .setCodeId(codeId)
                 .setSupportDeepLink(true)
                 .setAdCount(1) //请求广告数量为1到3条
-                .setExpressViewAcceptedSize(300, 450) //根据广告平台选择的尺寸，传入同比例尺寸
+                .setExpressViewAcceptedSize(this.insertWidth, this.insertHeight) //根据广告平台选择的尺寸，传入同比例尺寸
                 .build();
         //step5:请求广告，调用插屏广告异步请求接口
         TTAdManagerHolder.get().createAdNative(mContext.get()).loadInteractionExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
@@ -355,9 +363,6 @@ public class STtAdSDk implements ISGameSDK {
                 break;
             case INSERT:
                 loadInteractionAd(mAdConfigInfo.getInster(), callback);
-                break;
-            case INSERT2:
-                loadInteractionAd2(mAdConfigInfo.getInster(), callback);
                 break;
             case REWARD_VIDEO_VERTICAL:
                 loadRewardVideoAd(mAdConfigInfo.getRewardVideoVertical(), TTAdConstant.VERTICAL, callback);
