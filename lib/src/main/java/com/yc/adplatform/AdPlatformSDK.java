@@ -235,13 +235,13 @@ public class AdPlatformSDK {
     public void showInsertHorizontalAd(Context context, AdCallback callback) {
         String adCode = mInitInfo.getAdConfigInfo().getInster();
         String adPosition = "ad_insert";
-        showAd(context, AdType.INSERT, adPosition, adCode, callback);
+        showAd(context, AdType.INSERT2, adPosition, adCode, callback);
     }
 
-    public void showExpressAd(Context context, AdCallback callback) {
+    public void showExpressAd(Context context, AdCallback callback, FrameLayout containerView) {
         String adCode = mInitInfo.getAdConfigInfo().getExpress();
         String adPosition = "ad_express";
-        showAd(context, AdType.EXPRESS, adPosition, adCode, callback);
+        showAd(context, AdType.EXPRESS, adPosition, adCode, callback, containerView);
     }
 
     public void showFullScreenVideoVerticalAd(Context context, AdCallback callback) {
