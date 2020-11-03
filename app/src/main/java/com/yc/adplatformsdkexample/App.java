@@ -7,9 +7,25 @@ import com.yc.adplatform.ad.core.AdConfigInfo;
 import com.yc.adplatform.securityhttp.utils.LogUtil;
 
 public class App extends Application {
+
+    private static App app;
+
+    public static App getApp() {
+        return app;
+    }
+
+
+    private AdPlatformSDK.InitCallback initCallback;
+
+    public void setInitCallback(AdPlatformSDK.InitCallback initCallback) {
+        this.initCallback = initCallback;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        app = this;
+
         final AdPlatformSDK adPlatformSDK = AdPlatformSDK.getInstance(this);
 
         AdConfigInfo adConfigInfo = new AdConfigInfo();
@@ -23,22 +39,30 @@ public class App extends Application {
         adPlatformSDK.init(this, "1", new AdPlatformSDK.InitCallback() {
             @Override
             public void onSuccess() {
-                LogUtil.msg("----onSuccess");
+                if (initCallback != null) {
+                    initCallback.onSuccess();
+                }
             }
 
             @Override
             public void onFailure() {
-                LogUtil.msg("----onFailure");
+                if (initCallback != null) {
+                    initCallback.onFailure();
+                }
             }
 
             @Override
             public void onAdInitSuccess() {
-                LogUtil.msg("----onAdInitSuccess");
+                if (initCallback != null) {
+                    initCallback.onAdInitSuccess();
+                }
             }
 
             @Override
             public void onAdInitFailure() {
-                LogUtil.msg("----onAdInitFailure");
+                if (initCallback != null) {
+                    initCallback.onAdInitFailure();
+                }
             }
         });
     }

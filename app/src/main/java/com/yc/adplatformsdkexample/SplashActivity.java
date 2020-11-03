@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.whychl.TrickyCastle.R;
@@ -15,6 +16,7 @@ import com.yc.adplatform.securityhttp.utils.VUiKit;
 
 public class SplashActivity extends AppCompatActivity {
 
+    private PermissionHelper permissionHelper;
     private FrameLayout mFrameLayout;
     private boolean isAdClick;
 
@@ -23,12 +25,38 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        permissionHelper = new PermissionHelper();
+        permissionHelper.checkAndRequestPermission(this, new PermissionHelper.OnRequestPermissionsCallback() {
+            @Override
+            public void onRequestPermissionSuccess() {
+
+            }
+
+            @Override
+            public void onRequestPermissionError() {
+
+            }
+        });
         mFrameLayout = findViewById(R.id.fl_ad_container);
 
-        VUiKit.postDelayed(2000, new Runnable() {
+        App.getApp().setInitCallback(new AdPlatformSDK.InitCallback() {
             @Override
-            public void run() {
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+
+            @Override
+            public void onAdInitSuccess() {
                 showSplash();
+            }
+
+            @Override
+            public void onAdInitFailure() {
 
             }
         });
@@ -39,13 +67,11 @@ public class SplashActivity extends AppCompatActivity {
         AdPlatformSDK.getInstance(this).showSplashAd(this, new AdCallback() {
             @Override
             public void onDismissed() {
-                Log.d("00671 securityhttp ", "showSplash onDismissed: ");
                 startMainActivity(0);
             }
 
             @Override
             public void onNoAd(AdError adError) {
-                Log.d("00671 securityhttp ", "showSplash  onNoAd: ");
                 startMainActivity(0);
             }
 
@@ -60,7 +86,6 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onClick() {
-                Log.d("00671 securityhttp ", "showSplash onClick: ");
                 isAdClick = true;
             }
         }, mFrameLayout);
@@ -84,5 +109,11 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        permissionHelper.onRequestPermissionsResult(this, requestCode);
     }
 }

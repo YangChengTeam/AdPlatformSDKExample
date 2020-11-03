@@ -1,8 +1,12 @@
 package com.yc.adplatform.ad.core;
 
-public class AdConfigInfo {
+import com.alibaba.fastjson.annotation.JSONField;
 
+public class AdConfigInfo {
+    @JSONField(name = "app_id")
     private String appId;
+
+    @JSONField(name = "app_name")
     private String appName;
 
     private String splash;
@@ -10,9 +14,16 @@ public class AdConfigInfo {
     private String express;
     private String banner;
 
+    @JSONField(name = "reward_video_horizontal")
     private String rewardVideoHorizontal;
+
+    @JSONField(name = "reward_video_vertical")
     private String rewardVideoVertical;
+
+    @JSONField(name = "full_screen_video_vertical")
     private String fullScreenVideoVertical;
+
+    @JSONField(name = "full_screen_video_horizontal")
     private String fullScreenVideoHorizontal;
 
     private boolean isDebug = true;
