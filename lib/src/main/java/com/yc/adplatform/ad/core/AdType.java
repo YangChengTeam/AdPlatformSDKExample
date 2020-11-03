@@ -6,7 +6,8 @@ public enum AdType {
     FULL_SCREEN_VIDEO_VERTICAL, //全屏视频，竖版
     REWARD_VIDEO_HORIZON, //激励视频,横版
     REWARD_VIDEO_VERTICAL, //激励视频,竖版
-    INSERT,  //插屏
+    INSERT,
+    INSERT2,//插屏
     EXPRESS, //信息流
     BANNER,
 }

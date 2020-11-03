@@ -10,7 +10,7 @@ import com.yc.adplatform.AdPlatformSDK;
 import com.yc.adplatform.ad.core.AdCallback;
 import com.yc.adplatform.ad.core.AdError;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,38 +28,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         AdPlatformSDK adPlatformSDK = AdPlatformSDK.getInstance(this);
         if (view.getId() == R.id.insert_btn) {
-            adPlatformSDK.showInsertAd(this, new AdCallback() {
-                @Override
-                public void onDismissed() {
-                    
-                }
-
-                @Override
-                public void onNoAd(AdError adError) {
-
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-
-                @Override
-                public void onPresent() {
-
-                }
-
-                @Override
-                public void onClick() {
-
-                }
-            });
+            adPlatformSDK.showInsertAd(this,this);
         } else if (view.getId() == R.id.express_btn) {
-
+            adPlatformSDK.showInsertAd(this,this);
         } else if (view.getId() == R.id.reward_video_btn) {
 
         } else if (view.getId() == R.id.full_video_btn) {
 
         }
+    }
+
+    @Override
+    public void onDismissed() {
+
+    }
+
+    @Override
+    public void onNoAd(AdError adError) {
+
+    }
+
+    @Override
+    public void onComplete() {
+
+    }
+
+    @Override
+    public void onPresent() {
+
+    }
+
+    @Override
+    public void onClick() {
+
     }
 }

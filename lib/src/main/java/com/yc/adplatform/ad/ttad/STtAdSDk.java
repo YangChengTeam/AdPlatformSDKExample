@@ -273,6 +273,41 @@ public class STtAdSDk implements ISGameSDK {
     }
 
 
+    /**
+     * 加载插屏广告
+     */
+    private void loadInteractionAd2(String codeId, AdCallback callback) {
+        //step4:创建插屏广告请求参数AdSlot,具体参数含义参考文档
+        AdSlot adSlot = new AdSlot.Builder()
+                .setCodeId(codeId)
+                .setSupportDeepLink(true)
+                .setAdCount(1) //请求广告数量为1到3条
+                .setExpressViewAcceptedSize(450, 300) //根据广告平台选择的尺寸，传入同比例尺寸
+                .build();
+        //step5:请求广告，调用插屏广告异步请求接口
+        TTAdManagerHolder.get().createAdNative(mContext.get()).loadInteractionExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
+            @Override
+            public void onError(int code, String message) {
+                AdError adError = new AdError();
+                adError.setMessage(message);
+                adError.setCode(String.valueOf(code));
+                if (callback != null)
+                    callback.onNoAd(adError);
+            }
+
+            @Override
+            public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
+                if (ads == null || ads.size() == 0) {
+                    return;
+                }
+                TTNativeExpressAd ttNativeExpressAd = ads.get(0);
+                bindAdListenerExpress(ttNativeExpressAd, callback);
+                startTime = System.currentTimeMillis();
+                ttNativeExpressAd.render();
+            }
+        });
+    }
+
     //    private TTNativeExpressAd mTTAd;
     private long startTime = 0;
     private boolean mHasShowDownloadActive = false;
@@ -320,6 +355,9 @@ public class STtAdSDk implements ISGameSDK {
                 break;
             case INSERT:
                 loadInteractionAd(mAdConfigInfo.getInster(), callback);
+                break;
+            case INSERT2:
+                loadInteractionAd2(mAdConfigInfo.getInster(), callback);
                 break;
             case REWARD_VIDEO_VERTICAL:
                 loadRewardVideoAd(mAdConfigInfo.getRewardVideoVertical(), TTAdConstant.VERTICAL, callback);

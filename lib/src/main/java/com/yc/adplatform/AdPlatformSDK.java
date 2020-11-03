@@ -76,7 +76,7 @@ public class AdPlatformSDK {
     private String mAppId;
 
     public void setAdConfigInfo(AdConfigInfo adConfigInfo) {
-        if(this.mInitInfo == null) {
+        if (this.mInitInfo == null) {
             this.mInitInfo = new InitInfo();
         }
         this.mInitInfo.setAdConfigInfo(adConfigInfo);
@@ -93,6 +93,7 @@ public class AdPlatformSDK {
     }
 
     private int initCount = 3;
+
     public void init(final Context context, String appId, final InitCallback initCallback) {
 
         this.mInitInfo = new InitInfo();
@@ -124,12 +125,12 @@ public class AdPlatformSDK {
 
                 InitInfo initInfo = initInfoResultInfo.getData();
                 AdConfigInfo adConfigInfo = initInfo.getAdConfigInfo();
-                if(adConfigInfo == null || TextUtils.isEmpty(adConfigInfo.getAppId())){
+                if (adConfigInfo == null || TextUtils.isEmpty(adConfigInfo.getAppId())) {
                     initInfo.setAdConfigInfo(mInitInfo.getAdConfigInfo());
                 }
                 mInitInfo = initInfo;
 
-                if(adConfigInfo == null || TextUtils.isEmpty(adConfigInfo.getAppId())){
+                if (adConfigInfo == null || TextUtils.isEmpty(adConfigInfo.getAppId())) {
                     initCallback.onAdInitFailure();
                     LogUtil.msg("adinit: 广告初始化失败 未配置广告信息");
                     return;
@@ -225,7 +226,13 @@ public class AdPlatformSDK {
         showAd(context, AdType.BANNER, adPosition, adCode, callback, containerView);
     }
 
-    public void showInsertAd(Context context, AdCallback callback) {
+    public void showInsertVerticalAd(Context context, AdCallback callback) {
+        String adCode = mInitInfo.getAdConfigInfo().getInster();
+        String adPosition = "ad_insert";
+        showAd(context, AdType.INSERT, adPosition, adCode, callback);
+    }
+
+    public void showInsertHorizontalAd(Context context, AdCallback callback) {
         String adCode = mInitInfo.getAdConfigInfo().getInster();
         String adPosition = "ad_insert";
         showAd(context, AdType.INSERT, adPosition, adCode, callback);
