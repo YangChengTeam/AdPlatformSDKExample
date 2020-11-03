@@ -273,10 +273,93 @@ public class STtAdSDk implements ISGameSDK {
                     return;
                 }
                 TTNativeExpressAd ttNativeExpressAd = ads.get(0);
-                bindAdListenerExpress(ttNativeExpressAd, callback);
+                bindAdListener(ttNativeExpressAd, callback);
                 bindDislike(ttNativeExpressAd, false);
                 startTime = System.currentTimeMillis();
                 ttNativeExpressAd.render();
+            }
+        });
+    }
+
+    private void bindAdListener(TTNativeExpressAd ad, AdCallback callback) {
+        ad.setExpressInteractionListener(new TTNativeExpressAd.AdInteractionListener() {
+            @Override
+            public void onAdDismiss() {
+                Log.e(TAG, "广告关闭");
+                if (callback != null)
+                    callback.onDismissed();
+            }
+
+            @Override
+            public void onAdClicked(View view, int type) {
+                Log.e(TAG, "广告被点击");
+                if (callback != null)
+                    callback.onClick();
+            }
+
+            @Override
+            public void onAdShow(View view, int type) {
+                Log.e(TAG, "广告展示");
+                if (callback != null)
+                    callback.onPresent();
+            }
+
+            @Override
+            public void onRenderFail(View view, String msg, int code) {
+                Log.e(TAG, "渲染失败 render fail:" + (System.currentTimeMillis() - startTime));
+                AdError adError = new AdError();
+                adError.setMessage("渲染失败 " + msg);
+                adError.setCode(String.valueOf(code));
+                if (callback != null)
+                    callback.onNoAd(adError);
+            }
+
+            @Override
+            public void onRenderSuccess(View view, float width, float height) {
+                Log.e(TAG, "渲染成功 render suc:" + (System.currentTimeMillis() - startTime));
+                //返回view的宽高 单位 dp
+                ad.showInteractionExpressAd((Activity) (mContext.get()));
+
+            }
+        });
+        bindDislike(ad, false);
+        if (ad.getInteractionType() != TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
+            return;
+        }
+        ad.setDownloadListener(new TTAppDownloadListener() {
+            @Override
+            public void onIdle() {
+//                TToast.show(mContext.get(), "点击开始下载", Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
+                if (!mHasShowDownloadActive) {
+                    mHasShowDownloadActive = true;
+                    Log.d(TAG, "onDownloadActive: " + "下载中，点击暂停");
+//                    TToast.show(mContext.get(), "下载中，点击暂停", Toast.LENGTH_LONG);
+                }
+            }
+
+            @Override
+            public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
+                Log.d(TAG, "onDownloadPaused: " + "下载暂停，点击继续");
+//                TToast.show(mContext.get(), "下载暂停，点击继续", Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
+//                TToast.show(mContext.get(), "下载失败，点击重新下载", Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void onInstalled(String fileName, String appName) {
+//                TToast.show(mContext.get(), "安装完成，点击图片打开", Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void onDownloadFinished(long totalBytes, String fileName, String appName) {
+//                TToast.show(mContext.get(), "点击安装", Toast.LENGTH_LONG);
             }
         });
     }
