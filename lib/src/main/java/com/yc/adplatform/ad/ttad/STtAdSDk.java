@@ -280,13 +280,20 @@ public class STtAdSDk implements ISGameSDK {
                 if (ads == null || ads.size() == 0) {
                     return;
                 }
-                TTNativeExpressAd ttNativeExpressAd = ads.get(0);
+                ttNativeExpressAd = ads.get(0);
                 bindAdListener(ttNativeExpressAd, callback);
                 bindDislike(ttNativeExpressAd, false);
                 startTime = System.currentTimeMillis();
                 ttNativeExpressAd.render();
             }
         });
+    }
+
+    private TTNativeExpressAd ttNativeExpressAd;
+    public void destory(){
+        if(ttNativeExpressAd != null) {
+            ttNativeExpressAd.destroy();
+        }
     }
 
     private void bindAdListener(TTNativeExpressAd ad, AdCallback callback) {

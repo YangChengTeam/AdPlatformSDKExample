@@ -169,6 +169,10 @@ public class AdPlatformSDK {
         AdLog.sendLog(mInitInfo.getIp(), 41234, mAppId, mInitInfo.getUserId(), adPosition, adCode, "show");
     }
 
+    public void dismissInsert() {
+        STtAdSDk.getImpl().destory();
+    }
+
     private void showAd(Context context, AdType adType, String adPosition, String adCode, AdCallback callback, FrameLayout containerView) {
         STtAdSDk.getImpl().showAd(context, adType, new AdCallback() {
             @Override
@@ -233,7 +237,7 @@ public class AdPlatformSDK {
         showAd(context, AdType.SPLASH, adPosition, adCode, callback, containerView);
     }
 
-    public void showBannerAd(Context context,  int width, int height, AdCallback callback, FrameLayout containerView) {
+    public void showBannerAd(Context context, int width, int height, AdCallback callback, FrameLayout containerView) {
         STtAdSDk.getImpl().setBannerSize(width, height);
         String adCode = mInitInfo.getAdConfigInfo().getBanner();
         String adPosition = "ad_banner";

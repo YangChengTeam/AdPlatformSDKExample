@@ -6,7 +6,7 @@ import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.whychl.TrickyCastle2.R;
+import com.whychl.TrickyCastle.R;
 import com.yc.adplatform.AdPlatformSDK;
 import com.yc.adplatform.ad.core.AdCallback;
 import com.yc.adplatform.ad.core.AdError;
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (view.getId() == R.id.reward_video_btn) {
             adPlatformSDK.showRewardVideoHorizontalAd(this,this);
         } else if (view.getId() == R.id.full_video_btn) {
-            adPlatformSDK.showFullScreenVideoHorizontalAd(this,this);
+            adPlatformSDK.di
         } else if (view.getId() == R.id.banner_btn) {
             adPlatformSDK.showBannerAd(this,this,  (FrameLayout) findViewById(R.id.fl_ad_container));
         }
