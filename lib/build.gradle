@@ -6,7 +6,7 @@ ext {
     GITHUB_REPO_PATH = "AAR"
     PUBLISH_GROUP_ID = 'com.yc.adplatformsdk'
     PUBLISH_ARTIFACT_ID = 'aar'
-    PUBLISH_VERSION = '1.1.3'
+    PUBLISH_VERSION = '1.1.4'
 }
 
 uploadArchives {

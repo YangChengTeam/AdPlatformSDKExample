@@ -649,6 +649,15 @@ public class STtAdSDk implements ISGameSDK {
     }
 
 
+
+    private int splashWidth = 1080;
+    private int splashHeight = 1920;
+
+    public void setSplashSize(int width, int height){
+        this.splashWidth = width;
+        this.splashHeight = height;
+    }
+
     /**
      * 加载开屏广告
      */
@@ -657,7 +666,7 @@ public class STtAdSDk implements ISGameSDK {
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(codeId)
                 .setSupportDeepLink(true)
-                .setImageAcceptedSize(1080, 1920)
+                .setImageAcceptedSize(splashWidth, splashHeight)
                 .build();
         //step4:请求广告，调用开屏广告异步请求接口，对请求回调的广告作渲染处理
         TTAdManagerHolder.get().createAdNative(mContext.get()).loadSplashAd(adSlot, new TTAdNative.SplashAdListener() {

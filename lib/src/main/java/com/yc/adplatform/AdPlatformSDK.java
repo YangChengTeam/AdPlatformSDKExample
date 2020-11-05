@@ -214,7 +214,20 @@ public class AdPlatformSDK {
         showAd(context, adType, adPosition, adCode, callback, null);
     }
 
-    public void showSplashAd(Context context, AdCallback callback, FrameLayout containerView) {
+    public void showSplashAd(Context context, int width, int height, AdCallback callback, FrameLayout containerView) {
+        String adCode = mInitInfo.getAdConfigInfo().getSplash();
+        String adPosition = "ad_splash";
+        showAd(context, AdType.SPLASH, adPosition, adCode, callback, containerView);
+    }
+
+    public void showSplashVerticalAd(Context context, AdCallback callback, FrameLayout containerView) {
+        String adCode = mInitInfo.getAdConfigInfo().getSplash();
+        String adPosition = "ad_splash";
+        showAd(context, AdType.SPLASH, adPosition, adCode, callback, containerView);
+    }
+
+    public void showSplashHorizontalAd(Context context, AdCallback callback, FrameLayout containerView) {
+        STtAdSDk.getImpl().setSplashSize(1920, 1080);
         String adCode = mInitInfo.getAdConfigInfo().getSplash();
         String adPosition = "ad_splash";
         showAd(context, AdType.SPLASH, adPosition, adCode, callback, containerView);
