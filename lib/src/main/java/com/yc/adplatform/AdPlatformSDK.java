@@ -220,7 +220,8 @@ public class AdPlatformSDK {
         showAd(context, AdType.SPLASH, adPosition, adCode, callback, containerView);
     }
 
-    public void showBannerAd(Context context, AdCallback callback, FrameLayout containerView) {
+    public void showBannerAd(Context context,  int width, int height, AdCallback callback, FrameLayout containerView) {
+        STtAdSDk.getImpl().setBannerSize(width, height);
         String adCode = mInitInfo.getAdConfigInfo().getBanner();
         String adPosition = "ad_banner";
         showAd(context, AdType.BANNER, adPosition, adCode, callback, containerView);

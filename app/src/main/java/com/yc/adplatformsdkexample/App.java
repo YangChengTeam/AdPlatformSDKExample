@@ -5,6 +5,9 @@ import android.app.Application;
 import com.yc.adplatform.AdPlatformSDK;
 import com.yc.adplatform.ad.core.AdConfigInfo;
 import com.yc.adplatform.securityhttp.utils.LogUtil;
+import com.yc.adplatformsdkexample.hook.Hook;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class App extends Application {
 
@@ -24,8 +27,22 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        app = this;
 
+        try {
+            Hook.hookPms(this);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        app = this;
+        getPackageName();
         final AdPlatformSDK adPlatformSDK = AdPlatformSDK.getInstance(this);
 
         AdConfigInfo adConfigInfo = new AdConfigInfo();
@@ -66,4 +83,6 @@ public class App extends Application {
             }
         });
     }
+
+
 }

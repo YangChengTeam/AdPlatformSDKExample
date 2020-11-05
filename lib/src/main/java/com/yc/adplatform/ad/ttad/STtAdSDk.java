@@ -69,12 +69,20 @@ public class STtAdSDk implements ISGameSDK {
     }
 
 
+    private int bannerWidth = 500;
+    private int bannerHeight = 200;
+
+    public void setBannerSize(int width, int height){
+        this.bannerWidth = width;
+        this.bannerHeight = height;
+    }
+
     private void loadBannerAd(String bannerId, AdCallback adCallback) {
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(bannerId) //广告位id
                 .setSupportDeepLink(true)
                 .setAdCount(1) //请求广告数量为1到3条
-                .setExpressViewAcceptedSize(500, 200) //期望个性化模板广告view的size,单位dp
+                .setExpressViewAcceptedSize(bannerWidth, bannerHeight) //期望个性化模板广告view的size,单位dp
                 .setImageAcceptedSize(640, 320)//这个参数设置即可，不影响个性化模板广告的size
                 .build();
 
