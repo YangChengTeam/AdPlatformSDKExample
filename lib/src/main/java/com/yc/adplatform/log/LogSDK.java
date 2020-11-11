@@ -1,7 +1,5 @@
 package com.yc.adplatform.log;
 
-import com.yc.adplatform.securityhttp.domain.GoagalInfo;
-
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;

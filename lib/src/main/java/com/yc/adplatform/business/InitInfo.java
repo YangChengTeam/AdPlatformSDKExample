@@ -16,6 +16,17 @@ public class InitInfo {
         return userId;
     }
 
+    @JSONField(name = "is_open")
+    private boolean isOpen;
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
+    }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }
