@@ -75,6 +75,13 @@ public class AdPlatformSDK {
     private InitInfo mInitInfo;
     private String mAppId;
 
+    public boolean isAdOpen() {
+        if (this.mInitInfo == null) {
+            return false;
+        }
+        return mInitInfo.isOpen();
+    }
+
     public void setAdConfigInfo(AdConfigInfo adConfigInfo) {
         if (this.mInitInfo == null) {
             this.mInitInfo = new InitInfo();
