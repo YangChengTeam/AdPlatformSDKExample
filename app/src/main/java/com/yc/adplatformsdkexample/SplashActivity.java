@@ -8,7 +8,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.whychl.TrickyCastle2.R;
+import com.whychl.TrickyCastle.R;
 import com.yc.adplatform.AdPlatformSDK;
 import com.yc.adplatform.ad.core.AdCallback;
 import com.yc.adplatform.ad.core.AdError;
@@ -64,7 +64,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private void showSplash() {
-        AdPlatformSDK.getInstance(this).showSplashAd(this, new AdCallback() {
+        AdPlatformSDK.getInstance(this).showSplashVerticalAd(this, new AdCallback() {
             @Override
             public void onDismissed() {
                 startMainActivity(0);

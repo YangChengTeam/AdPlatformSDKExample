@@ -14,6 +14,9 @@ public class AdConfigInfo {
     private String express;
     private String banner;
 
+    @JSONField(name = "is_open")
+    private boolean isOpen;
+
     @JSONField(name = "reward_video_horizontal")
     private String rewardVideoHorizontal;
 
@@ -114,5 +117,13 @@ public class AdConfigInfo {
 
     public void setDebug(boolean debug) {
         isDebug = debug;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
     }
 }

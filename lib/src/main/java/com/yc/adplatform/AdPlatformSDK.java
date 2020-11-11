@@ -135,7 +135,6 @@ public class AdPlatformSDK {
                     LogUtil.msg("adinit: 广告初始化失败 未配置广告信息");
                     return;
                 }
-
                 SAdSDK.getImpl().initAd(context, adConfigInfo, new InitAdCallback() {
                     @Override
                     public void onSuccess() {
@@ -169,11 +168,13 @@ public class AdPlatformSDK {
         AdLog.sendLog(mInitInfo.getIp(), 41234, mAppId, mInitInfo.getUserId(), adPosition, adCode, "show");
     }
 
-    public void dismissInsert() {
-        STtAdSDk.getImpl().destory();
-    }
-
     private void showAd(Context context, AdType adType, String adPosition, String adCode, AdCallback callback, FrameLayout containerView) {
+        if (mInitInfo == null || mInitInfo.getAdConfigInfo() == null) return;
+        if (!mInitInfo.getAdConfigInfo().isOpen()) {
+            LogUtil.msg("广告未开启");
+            return;
+        }
+
         STtAdSDk.getImpl().showAd(context, adType, new AdCallback() {
             @Override
             public void onDismissed() {

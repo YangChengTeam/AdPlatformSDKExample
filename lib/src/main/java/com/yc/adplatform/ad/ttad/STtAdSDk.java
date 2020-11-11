@@ -63,7 +63,7 @@ public class STtAdSDk implements ISGameSDK {
     private int insertWidth = 300;
     private int insertHeight = 450;
 
-    public void setInsertSize(int width, int height){
+    public void setInsertSize(int width, int height) {
         this.insertWidth = width;
         this.insertHeight = height;
     }
@@ -72,7 +72,7 @@ public class STtAdSDk implements ISGameSDK {
     private int bannerWidth = 500;
     private int bannerHeight = 200;
 
-    public void setBannerSize(int width, int height){
+    public void setBannerSize(int width, int height) {
         this.bannerWidth = width;
         this.bannerHeight = height;
     }
@@ -117,7 +117,7 @@ public class STtAdSDk implements ISGameSDK {
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(feedId)
                 .setSupportDeepLink(true)
-                .setAdCount(1) //请求广告数量为1到3条
+                .setAdCount(3) //请求广告数量为1到3条
                 .setExpressViewAcceptedSize(254, 200)
                 .build();
 
@@ -280,7 +280,7 @@ public class STtAdSDk implements ISGameSDK {
                 if (ads == null || ads.size() == 0) {
                     return;
                 }
-                ttNativeExpressAd = ads.get(0);
+                TTNativeExpressAd ttNativeExpressAd = ads.get(0);
                 bindAdListener(ttNativeExpressAd, callback);
                 bindDislike(ttNativeExpressAd, false);
                 startTime = System.currentTimeMillis();
@@ -289,12 +289,7 @@ public class STtAdSDk implements ISGameSDK {
         });
     }
 
-    private TTNativeExpressAd ttNativeExpressAd;
-    public void destory(){
-        if(ttNativeExpressAd != null) {
-            ttNativeExpressAd.destroy();
-        }
-    }
+
 
     private void bindAdListener(TTNativeExpressAd ad, AdCallback callback) {
         ad.setExpressInteractionListener(new TTNativeExpressAd.AdInteractionListener() {
@@ -378,8 +373,6 @@ public class STtAdSDk implements ISGameSDK {
             }
         });
     }
-
-
 
 
     //    private TTNativeExpressAd mTTAd;
@@ -593,6 +586,7 @@ public class STtAdSDk implements ISGameSDK {
         //step4:创建广告请求参数AdSlot,具体参数含义参考文档
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(codeId)
+                .setAdCount(2)
                 .setSupportDeepLink(true)
                 .setImageAcceptedSize(1080, 1920)
                 .setOrientation(orientation)//必填参数，期望视频的播放方向：TTAdConstant.HORIZONTAL 或 TTAdConstant.VERTICAL
@@ -656,11 +650,10 @@ public class STtAdSDk implements ISGameSDK {
     }
 
 
-
     private int splashWidth = 1080;
     private int splashHeight = 1920;
 
-    public void setSplashSize(int width, int height){
+    public void setSplashSize(int width, int height) {
         this.splashWidth = width;
         this.splashHeight = height;
     }
@@ -672,6 +665,7 @@ public class STtAdSDk implements ISGameSDK {
         //step3:创建开屏广告请求参数AdSlot,具体参数含义参考文档
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(codeId)
+                .setAdCount(3)
                 .setSupportDeepLink(true)
                 .setImageAcceptedSize(splashWidth, splashHeight)
                 .build();
