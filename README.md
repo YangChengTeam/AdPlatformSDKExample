@@ -9,7 +9,7 @@
   - 根目录build.gradle maven配置  [查看](https://github.com/YangChengTeam/AdPlatformSDKExample/blob/master/build.gradle)
     -   maven {url 'https://raw.githubusercontent.com/YangChengTeam/AdPlatformSDKExample/master/lib/AAR'}
 
-  - 项目build.gradle  implementation 'com.yc.adplatformsdk:aar:1.0.2'  
+  - 项目build.gradle  implementation 'com.yc.adplatformsdk:aar:1.2.2'  
   - AndroidManifest.xml 权限配置  [查看](https://github.com/YangChengTeam/AdPlatformSDKExample/blob/master/app/src/main/AndroidManifest.xml)
 
 - 代码
