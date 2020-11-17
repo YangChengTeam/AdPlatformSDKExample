@@ -9,14 +9,15 @@
   - 根目录build.gradle maven配置  [查看](https://github.com/YangChengTeam/AdPlatformSDKExample/blob/master/build.gradle)
     -   maven {url 'https://raw.githubusercontent.com/YangChengTeam/AdPlatformSDKExample/master/lib/AAR'}
 
-  - 项目build.gradle  implementation 'com.yc.adplatformsdk:aar:1.2.2'  
+  - 项目build.gradle  implementation 'com.yc.adplatformsdk:aar:1.3.0'  
   - AndroidManifest.xml 权限配置  [查看](https://github.com/YangChengTeam/AdPlatformSDKExample/blob/master/app/src/main/AndroidManifest.xml)
 
 - 代码
    -  生成对象 
       - AdPlatformSDK adPlatformSDK = AdPlatformSDK.getInstance(this);
    -  设置默认广告默认值
-      - adPlatformSDK.setAdConfigInfo()
+      - adPlatformSDK.setAdConfigInfo() //
+      - adPlatformSDK.setInitUrl()  //
    -  初始化 
       - adPlatformSDK.init()
    -  调用广告

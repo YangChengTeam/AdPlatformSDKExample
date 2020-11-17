@@ -13,16 +13,19 @@ import rx.Observable;
 
 public class InitEngin extends BaseEngin {
 
+    private String url;
+
     public InitEngin(Context context) {
         super(context);
     }
 
     @Override
     public String getUrl() {
-        return "http://qudaotj.tools86.com/api/v1.user/imeiLogin";
+        return this.url;
     }
 
-    public Observable<ResultInfo<InitInfo>> getInItInfo(String appId) {
+    public Observable<ResultInfo<InitInfo>> getInItInfo(String url, String appId) {
+        this.url = url;
         Map<String, String> params = new HashMap<>();
         params.put("app_id", appId);
         return rxpost(new TypeReference<ResultInfo<InitInfo>>() {

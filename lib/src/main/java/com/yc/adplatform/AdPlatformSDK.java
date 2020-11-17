@@ -41,6 +41,12 @@ public class AdPlatformSDK {
         return sInstance;
     }
 
+    private String initUrl;
+
+    public void setInitUrl(String initUrl) {
+        this.initUrl = initUrl;
+    }
+
     private AdPlatformSDK(Context context) {
         MMKV.initialize(context);
 
@@ -68,8 +74,6 @@ public class AdPlatformSDK {
             params.put("version_num", GoagalInfo.get().getPackageInfo(context).versionName + "");
         }
         HttpConfig.setDefaultParams(params);
-
-
     }
 
     private InitInfo mInitInfo;
@@ -108,7 +112,7 @@ public class AdPlatformSDK {
 
         final boolean[] isInitSuccess = {false};
 
-        new InitEngin(context).getInItInfo(appId).subscribe(new Action1<ResultInfo<InitInfo>>() {
+        new InitEngin(context).getInItInfo(initUrl, appId).subscribe(new Action1<ResultInfo<InitInfo>>() {
             @Override
             public void call(ResultInfo<InitInfo> initInfoResultInfo) {
                 if (initInfoResultInfo != null && initInfoResultInfo.getCode() == 1 && initInfoResultInfo.getData() != null) {
