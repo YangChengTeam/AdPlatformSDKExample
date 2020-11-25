@@ -1,10 +1,12 @@
 package com.yc.adplatformsdkexample;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import com.yc.adplatform.AdPlatformSDK;
 import com.yc.adplatform.ad.core.AdConfigInfo;
 import com.yc.adplatform.securityhttp.utils.LogUtil;
+import com.yc.adplatform.securityhttp.utils.VUiKit;
 import com.yc.adplatformsdkexample.hook.Hook;
 
 import java.lang.reflect.InvocationTargetException;
@@ -28,46 +30,15 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        app = this;
-        final AdPlatformSDK adPlatformSDK = AdPlatformSDK.getInstance(this);
-
-        AdConfigInfo adConfigInfo = new AdConfigInfo();
-        adConfigInfo.setAppId("5108784");
-        adConfigInfo.setAppName("还我宠物");
-        adConfigInfo.setBanner("945573585");
-        adConfigInfo.setInster("945568880");
-        adConfigInfo.setRewardVideoHorizontal("945573588");
-        adPlatformSDK.setAdConfigInfo(adConfigInfo);
-
-        adPlatformSDK.init(this, "1", new AdPlatformSDK.InitCallback() {
+        VUiKit.postDelayed(2000, new Runnable() {
             @Override
-            public void onSuccess() {
-                if (initCallback != null) {
-                    initCallback.onSuccess();
-                }
-            }
-
-            @Override
-            public void onFailure() {
-                if (initCallback != null) {
-                    initCallback.onFailure();
-                }
-            }
-
-            @Override
-            public void onAdInitSuccess() {
-                if (initCallback != null) {
-                    initCallback.onAdInitSuccess();
-                }
-            }
-
-            @Override
-            public void onAdInitFailure() {
-                if (initCallback != null) {
-                    initCallback.onAdInitFailure();
-                }
+            public void run() {
+                Toast.makeText(App.this, "ssss", Toast.LENGTH_LONG).show();
             }
         });
+
+        app = this;
+
     }
 
 }
