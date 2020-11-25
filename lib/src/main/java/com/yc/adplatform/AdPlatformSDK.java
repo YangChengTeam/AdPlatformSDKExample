@@ -20,6 +20,7 @@ import com.yc.adplatform.securityhttp.domain.GoagalInfo;
 import com.yc.adplatform.securityhttp.domain.ResultInfo;
 import com.yc.adplatform.securityhttp.net.contains.HttpConfig;
 import com.yc.adplatform.securityhttp.utils.LogUtil;
+import com.yc.adplatform.securityhttp.utils.VUiKit;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -192,44 +193,50 @@ public class AdPlatformSDK {
             return;
         }
 
-        STtAdSDk.getImpl().showAd(context, adType, new AdCallback() {
+        VUiKit.post(new Runnable() {
             @Override
-            public void onDismissed() {
-                if (callback != null) {
-                    callback.onDismissed();
-                }
-            }
+            public void run() {
+                STtAdSDk.getImpl().showAd(context, adType, new AdCallback() {
+                    @Override
+                    public void onDismissed() {
+                        if (callback != null) {
+                            callback.onDismissed();
+                        }
+                    }
 
-            @Override
-            public void onNoAd(AdError adError) {
-                if (callback != null) {
-                    callback.onNoAd(adError);
-                }
-            }
+                    @Override
+                    public void onNoAd(AdError adError) {
+                        if (callback != null) {
+                            callback.onNoAd(adError);
+                        }
+                    }
 
-            @Override
-            public void onComplete() {
-                if (callback != null) {
-                    callback.onComplete();
-                }
-            }
+                    @Override
+                    public void onComplete() {
+                        if (callback != null) {
+                            callback.onComplete();
+                        }
+                    }
 
-            @Override
-            public void onPresent() {
-                if (callback != null) {
-                    callback.onPresent();
-                }
-                sendShowLog(adPosition, adCode);
-            }
+                    @Override
+                    public void onPresent() {
+                        if (callback != null) {
+                            callback.onPresent();
+                        }
+                        sendShowLog(adPosition, adCode);
+                    }
 
-            @Override
-            public void onClick() {
-                if (callback != null) {
-                    callback.onClick();
-                }
-                sendClickLog(adPosition, adCode);
+                    @Override
+                    public void onClick() {
+                        if (callback != null) {
+                            callback.onClick();
+                        }
+                        sendClickLog(adPosition, adCode);
+                    }
+                }, containerView);
             }
-        }, containerView);
+        });
+
     }
 
     private void showAd(Context context, AdType adType, String adPosition, String adCode, AdCallback callback) {
