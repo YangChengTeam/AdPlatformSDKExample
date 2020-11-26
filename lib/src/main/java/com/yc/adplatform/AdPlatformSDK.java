@@ -110,6 +110,12 @@ public class AdPlatformSDK {
             public void call(ResultInfo<InitInfo> initInfoResultInfo) {
                 if (initInfoResultInfo != null && initInfoResultInfo.getCode() == 1 && initInfoResultInfo.getData() != null) {
                     if (initCallback != null) {
+                        InitInfo initInfo = initInfoResultInfo.getData();
+                        AdConfigInfo adConfigInfo = initInfo.getAdConfigInfo();
+                        if (adConfigInfo == null || TextUtils.isEmpty(adConfigInfo.getAppId())) {
+                            initInfo.setAdConfigInfo(mInitInfo.getAdConfigInfo());
+                        }
+                        mInitInfo = initInfo;
                         initCallback.onSuccess();
                         isInitSuccess[0] = true;
                         LogUtil.msg("init: 初始化成功");
@@ -127,12 +133,7 @@ public class AdPlatformSDK {
                     LogUtil.msg("init: 初始化失败");
                 }
 
-                InitInfo initInfo = initInfoResultInfo.getData();
-                AdConfigInfo adConfigInfo = initInfo.getAdConfigInfo();
-                if (adConfigInfo == null || TextUtils.isEmpty(adConfigInfo.getAppId())) {
-                    initInfo.setAdConfigInfo(mInitInfo.getAdConfigInfo());
-                }
-                mInitInfo = initInfo;
+
             }
         });
     }
