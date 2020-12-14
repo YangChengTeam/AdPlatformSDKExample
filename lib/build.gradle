@@ -6,7 +6,7 @@ ext {
     GITHUB_REPO_PATH = "AAR"
     PUBLISH_GROUP_ID = 'com.yc.adplatformsdk'
     PUBLISH_ARTIFACT_ID = 'aar'
-    PUBLISH_VERSION = '1.4.2'
+    PUBLISH_VERSION = '1.4.3'
 }
 
 uploadArchives {
@@ -82,5 +82,5 @@ dependencies {
     implementation 'com.orhanobut:logger:1.15'
     implementation 'io.reactivex:rxandroid:+'
     implementation 'io.reactivex:rxjava:+'
-    implementation 'com.yc.uuid:aar:1.0.6'
+    implementation 'com.yc.uuid:aar:1.0.8'
 }

@@ -24,8 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name="com.yc.adplatformsdkexample.App">
-        <activity android:name="com.yc.adplatformsdkexample.MainActivity" />
-        <activity android:name="com.yc.adplatformsdkexample.SplashActivity">
+        <activity android:name="com.yc.adplatformsdkexample.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

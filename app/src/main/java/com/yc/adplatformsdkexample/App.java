@@ -6,10 +6,12 @@ import android.widget.Toast;
 
 import com.yc.adplatform.AdPlatformSDK;
 import com.yc.adplatform.ad.core.AdConfigInfo;
+import com.yc.adplatform.business.InitInfo;
 import com.yc.adplatform.securityhttp.utils.LogUtil;
 import com.yc.adplatform.securityhttp.utils.VUiKit;
 import com.yc.adplatformsdkexample.hook.Hook;
 import com.yc.uuid.UDID;
+import com.yc.uuid.UDIDInfo;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -31,23 +33,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        UDID.getInstance(this).init();
 
-        VUiKit.postDelayed(300, new Runnable() {
-            @Override
-            public void run() {
-                AdPlatformSDK.getInstance(App.this).init(App.this, "1", new AdPlatformSDK.InitCallback() {
-                    @Override
-                    public void onSuccess() {
-
-                    }
-
-                    @Override
-                    public void onFailure() {
-
-                    }
-                });
-            }
-        });
 
 
 
@@ -58,6 +45,6 @@ public class App extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        UDID.getInstance(base).init();
+
     }
 }
