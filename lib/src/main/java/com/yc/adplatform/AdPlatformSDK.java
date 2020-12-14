@@ -13,6 +13,7 @@ import com.yc.adplatform.securityhttp.domain.GoagalInfo;
 import com.yc.adplatform.securityhttp.domain.ResultInfo;
 import com.yc.adplatform.securityhttp.net.contains.HttpConfig;
 import com.yc.adplatform.securityhttp.utils.LogUtil;
+import com.yc.adplatform.securityhttp.utils.VUiKit;
 import com.yc.uuid.UDID;
 import com.yc.uuid.UDIDInfo;
 
@@ -44,7 +45,6 @@ public class AdPlatformSDK {
 
     private AdPlatformSDK(Context context) {
         MMKV.initialize(context);
-        UDIDInfo udidInfo = UDID.getInstance(context).build();
         GoagalInfo.get().init(context);
         HttpConfig.setPublickey("-----BEGIN PUBLIC KEY-----\n" +
                 "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnEN9PULzGdCDba7vcLUOq2gbWpl1HvEOaiTKzLjHx46JoqwvHB5Pxb5ICirmyp66WLysHsDi7D0as4426iN9Y5NqCKAbT5RbAqbLYfBMNO56MoN78av/mu3XO8shxUThFQcpapr/e65PwLHgoQjdb3KpY2U3W0I0gzFKdaES5Qcc3sp43V4jCiyGPm9cxpEh0hr4+onMFB16M7Ai0K/V/HPnlR/ufYw7eG/qAiO8+FCn0EdbCd7y0EEB3pXG98xKf21shIM7Ikergd/06oLKvKB2e6Y4u3N7MVDDN/Vm+75iwIUSQYdaFwjhRzkFiPknSoOnitCxKrsDiXYmWCLrAQIDAQAB\n" +
@@ -55,13 +55,9 @@ public class AdPlatformSDK {
         if (GoagalInfo.get().channelInfo != null && GoagalInfo.get().channelInfo.agent_id != null) {
             agent_id = GoagalInfo.get().channelInfo.agent_id;
         }
-
+        params.put("android_id", GoagalInfo.get().uuid);
         params.put("agent_id", agent_id);
         params.put("device_type", "android");
-        params.put("android_id", GoagalInfo.get().uuid);
-        params.put("oaid", udidInfo.getOaid());
-        params.put("imei", TextUtils.isEmpty(udidInfo.getImei()) ? udidInfo.getImei() : GoagalInfo.get().uuid);
-        params.put("imei2", udidInfo.getImei2());
         params.put("ts", System.currentTimeMillis() + "");
         String sv = android.os.Build.MODEL.contains(android.os.Build.BRAND) ? android.os.Build.MODEL + " " + android
                 .os.Build.VERSION.RELEASE : Build.BRAND + " " + android
@@ -71,6 +67,7 @@ public class AdPlatformSDK {
             params.put("version_code", GoagalInfo.get().getPackageInfo(context).versionCode + "");
             params.put("version_num", GoagalInfo.get().getPackageInfo(context).versionName + "");
         }
+
         HttpConfig.setDefaultParams(params);
     }
 
@@ -103,14 +100,14 @@ public class AdPlatformSDK {
 
     private int initCount = 3;
 
-    public void init(final Context context, String appId, final InitCallback initCallback) {
+    public void init(final Context context, String appId, UDIDInfo udidInfo, final InitCallback initCallback) {
 
         this.mInitInfo = new InitInfo();
         this.mAppId = appId;
 
         final boolean[] isInitSuccess = {false};
 
-        new InitEngin(context).getInItInfo(initUrl, appId).subscribe(new Action1<ResultInfo<InitInfo>>() {
+        new InitEngin(context).getInItInfo(initUrl, appId, udidInfo).subscribe(new Action1<ResultInfo<InitInfo>>() {
             @Override
             public void call(ResultInfo<InitInfo> initInfoResultInfo) {
                 if (initInfoResultInfo != null && initInfoResultInfo.getCode() == 1 && initInfoResultInfo.getData() != null) {
@@ -128,7 +125,7 @@ public class AdPlatformSDK {
                 }
 
                 if (!isInitSuccess[0] && --initCount > 0) {
-                    init(context, appId, initCallback);
+                    init(context, appId, udidInfo, initCallback);
                     LogUtil.msg("reinit: 初始化次数" + initCount);
                     return;
                 }
