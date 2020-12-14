@@ -8,10 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.whychl.TrickyCastle.R;
 import com.yc.adplatform.AdPlatformSDK;
-import com.yc.adplatform.ad.core.AdCallback;
-import com.yc.adplatform.ad.core.AdError;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdCallback {
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,41 +27,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         final AdPlatformSDK adPlatformSDK = AdPlatformSDK.getInstance(this);
-        if (view.getId() == R.id.insert_btn) {
-            adPlatformSDK.showInsertAd(this,900, 600, this);
-        } else if (view.getId() == R.id.express_btn) {
-            adPlatformSDK.showExpressAd(this,this, (FrameLayout) findViewById(R.id.fl_ad_container));
-        } else if (view.getId() == R.id.reward_video_btn) {
-            adPlatformSDK.showRewardVideoHorizontalAd(this,this);
-        } else if (view.getId() == R.id.full_video_btn) {
-            adPlatformSDK.showFullScreenVideoVerticalAd(this, this);
-        } else if (view.getId() == R.id.banner_btn) {
-            adPlatformSDK.showBannerAd(this, 300, 100, this,  (FrameLayout) findViewById(R.id.fl_ad_container));
-        }
-    }
-
-    @Override
-    public void onDismissed() {
 
     }
 
-    @Override
-    public void onNoAd(AdError adError) {
 
-    }
-
-    @Override
-    public void onComplete() {
-
-    }
-
-    @Override
-    public void onPresent() {
-
-    }
-
-    @Override
-    public void onClick() {
-
-    }
 }

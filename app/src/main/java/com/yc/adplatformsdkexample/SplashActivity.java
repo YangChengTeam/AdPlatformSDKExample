@@ -10,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.whychl.TrickyCastle.R;
 import com.yc.adplatform.AdPlatformSDK;
-import com.yc.adplatform.ad.core.AdCallback;
-import com.yc.adplatform.ad.core.AdError;
 import com.yc.adplatform.securityhttp.utils.VUiKit;
 
 public class SplashActivity extends AppCompatActivity {
@@ -49,47 +47,9 @@ public class SplashActivity extends AppCompatActivity {
             public void onFailure() {
 
             }
-
-            @Override
-            public void onAdInitSuccess() {
-                showSplash();
-            }
-
-            @Override
-            public void onAdInitFailure() {
-
-            }
         });
     }
 
-
-    private void showSplash() {
-        AdPlatformSDK.getInstance(this).showSplashVerticalAd(this, new AdCallback() {
-            @Override
-            public void onDismissed() {
-                startMainActivity(0);
-            }
-
-            @Override
-            public void onNoAd(AdError adError) {
-                startMainActivity(0);
-            }
-
-            @Override
-            public void onComplete() {
-            }
-
-            @Override
-            public void onPresent() {
-                Log.d("00671 securityhttp ", "showSplash onPresent: ");
-            }
-
-            @Override
-            public void onClick() {
-                isAdClick = true;
-            }
-        }, mFrameLayout);
-    }
 
     @Override
     public void onResume() {

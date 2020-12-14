@@ -41,9 +41,7 @@ public class AdPlatformSDK {
     public void setInitUrl(String initUrl) {
         this.initUrl = initUrl;
     }
-    private void init(Context context){
-        UDID.getInstance(context).init();
-    }
+
     private AdPlatformSDK(Context context) {
         MMKV.initialize(context);
         UDIDInfo udidInfo = UDID.getInstance(context).build();
@@ -62,7 +60,7 @@ public class AdPlatformSDK {
         params.put("device_type", "android");
         params.put("android_id", GoagalInfo.get().uuid);
         params.put("oaid", udidInfo.getOaid());
-        params.put("imei", udidInfo.getImei());
+        params.put("imei", TextUtils.isEmpty(udidInfo.getImei()) ? udidInfo.getImei() : GoagalInfo.get().uuid);
         params.put("imei2", udidInfo.getImei2());
         params.put("ts", System.currentTimeMillis() + "");
         String sv = android.os.Build.MODEL.contains(android.os.Build.BRAND) ? android.os.Build.MODEL + " " + android
