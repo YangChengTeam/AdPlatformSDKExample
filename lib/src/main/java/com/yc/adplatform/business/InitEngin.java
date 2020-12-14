@@ -33,7 +33,7 @@ public class InitEngin extends BaseEngin {
         params.put("app_id", appId);
         params.put("oaid", udidInfo.getOaid());
         params.put("imei", TextUtils.isEmpty(udidInfo.getImei()) ? udidInfo.getImei() : GoagalInfo.get().uuid);
-        params.put("imei2", udidInfo.getImei2());
+        params.put("imei2", TextUtils.isEmpty(udidInfo.getImei2()) ? udidInfo.getImei2() : "");
         return rxpost(new TypeReference<ResultInfo<InitInfo>>() {
         }.getType(), params, true, true, true);
     }
