@@ -6,7 +6,7 @@ ext {
     GITHUB_REPO_PATH = "AAR"
     PUBLISH_GROUP_ID = 'com.yc.adplatformsdk'
     PUBLISH_ARTIFACT_ID = 'aar'
-    PUBLISH_VERSION = '1.3.3'
+    PUBLISH_VERSION = '1.4.0'
 }
 
 uploadArchives {
@@ -73,6 +73,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     provided files('libs\\open_ad_sdk.aar')
+    provided files('libs\\msa_mdid_1.0.13.aar')
 
     implementation 'com.alibaba:fastjson:1.1.72.android'
     implementation 'com.tencent:mmkv-static:1.1.2'
@@ -81,4 +82,5 @@ dependencies {
     implementation 'com.orhanobut:logger:1.15'
     implementation 'io.reactivex:rxandroid:+'
     implementation 'io.reactivex:rxjava:+'
+    implementation 'com.yc.uuid:aar:1.0.6'
 }
